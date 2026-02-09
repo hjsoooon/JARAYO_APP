@@ -15,6 +15,8 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   const [selectedStory, setSelectedStory] = useState<DiaryEntry | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [coverType, setCoverType] = useState<'hard' | 'soft'>('hard');
+  const [paperType, setPaperType] = useState<'randevu' | 'montblanc' | 'arte'>('randevu');
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // 월별 진행도 계산
@@ -102,10 +104,11 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     }
   };
 
-  // 동화책 시안 페이지
+  // 동화책 만들기 페이지
   if (viewMode === 'bookPreview') {
     return (
       <div className="h-full flex flex-col bg-cream">
+        {/* 헤더 */}
         <div className="px-6 pt-4 pb-2 flex items-center justify-center h-[58px] bg-cream sticky top-0 z-10">
           <button 
             onClick={() => setViewMode('grid')} 
@@ -113,84 +116,176 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
           >
             <ChevronLeft size={24} />
           </button>
-          <h2 className="font-bold text-lg text-gray-800">동화책 시안 미리보기</h2>
+          <h2 className="font-bold text-lg text-gray-800">동화책 만들기</h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto pb-10 px-6">
+        <div className="flex-1 overflow-y-auto pb-32">
           {/* 표지 미리보기 */}
-          <div className="mb-8">
-            <h3 className="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider">표지</h3>
-            <div className="bg-white p-4 rounded-3xl shadow-lg">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-100 to-orange-100">
-                {diaries[0]?.mainImageUrl && (
+          <div className="flex justify-center py-8 px-6">
+            <div className="w-[200px] bg-white rounded-xl shadow-2xl overflow-hidden">
+              <div className="relative aspect-[3/4] bg-gradient-to-br from-green-800/80 to-green-900/90">
+                {monthlyDiaries[0]?.mainImageUrl && (
                   <img 
-                    src={diaries[0].mainImageUrl} 
+                    src={monthlyDiaries[0].mainImageUrl} 
                     alt="Book Cover" 
-                    className="w-full h-full object-cover opacity-80" 
+                    className="w-full h-full object-cover opacity-30" 
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-6">
-                  <h1 className="text-3xl font-bold mb-4 text-center drop-shadow-lg">
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+                  <span className="text-[8px] text-yellow-300 tracking-[0.3em] uppercase font-bold mb-4">Special Edition</span>
+                  <h3 className="text-white text-lg font-bold leading-snug mb-3">
                     {selectedMonth}월의 동화책
-                  </h1>
-                  <p className="text-sm opacity-90 drop-shadow">
-                    {diaries[0]?.babyAgeWeeks && `${Math.floor(diaries[0].babyAgeWeeks / 4)}개월의 기록`}
-                  </p>
+                  </h3>
+                  <p className="text-white/60 text-[9px]">Omniscient Baby View Storybook</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 목차 미리보기 */}
-          <div className="mb-8">
-            <h3 className="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider">목차</h3>
-            <div className="bg-white p-6 rounded-3xl shadow-sm space-y-3">
-              {monthlyDiaries.slice(0, 10).map((diary, idx) => (
-                <div key={diary.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors">
-                  <span className="text-gray-400 font-bold text-sm w-8">{idx + 1}.</span>
-                  <span className="flex-1 text-gray-800 font-medium text-sm">{diary.title}</span>
-                  <span className="text-gray-400 text-xs">{formatDateShort(diary.date)}</span>
+          {/* 수록될 이야기 */}
+          <div className="px-6 mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-gray-800">수록될 이야기</h3>
+              <span className="text-sm text-gray-500">총 {monthlyDiaries.length}편</span>
+            </div>
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+              {monthlyDiaries.map((diary) => (
+                <div key={diary.id} className="shrink-0 w-[80px]">
+                  <div className="w-[80px] h-[80px] rounded-xl overflow-hidden bg-yellow-100 mb-2 shadow-sm">
+                    <img 
+                      src={diary.mainImageUrl || diary.imageUrl} 
+                      alt={diary.title} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <p className="text-[10px] text-gray-600 line-clamp-2 leading-tight font-medium">{diary.title}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 샘플 페이지 */}
-          <div className="mb-8">
-            <h3 className="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider">샘플 페이지</h3>
-            {diaries[0] && (
-              <div className="bg-white p-6 rounded-3xl shadow-sm">
-                <div className="mb-4">
-                  <h4 className="text-xl font-bold text-gray-800 mb-2">{diaries[0].title}</h4>
-                  <p className="text-xs text-gray-400">{formatDate(diaries[0].date)}</p>
+          {/* 커버 종류 */}
+          <div className="px-6 mb-8">
+            <h3 className="font-bold text-gray-800 mb-4">커버 종류</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <button 
+                onClick={() => setCoverType('hard')}
+                className={`p-5 rounded-2xl text-left transition-all ${
+                  coverType === 'hard' 
+                    ? 'bg-white border-2 border-yellow-400 shadow-md' 
+                    : 'bg-white border-2 border-transparent shadow-sm'
+                }`}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <span className="font-bold text-gray-800 text-sm">하드커버</span>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    coverType === 'hard' ? 'border-yellow-400' : 'border-gray-200'
+                  }`}>
+                    {coverType === 'hard' && <div className="w-3 h-3 rounded-full bg-yellow-400"></div>}
+                  </div>
                 </div>
-                <div className="aspect-square rounded-2xl overflow-hidden mb-4">
-                  <img 
-                    src={diaries[0].mainImageUrl || diaries[0].imageUrl} 
-                    alt="Sample page" 
-                    className="w-full h-full object-cover" 
-                  />
+                <p className="text-[11px] text-gray-400 leading-relaxed">오랫동안 간직해 주는 튼튼한 고급 양장 제본</p>
+              </button>
+              
+              <button 
+                onClick={() => setCoverType('soft')}
+                className={`p-5 rounded-2xl text-left transition-all ${
+                  coverType === 'soft' 
+                    ? 'bg-white border-2 border-yellow-400 shadow-md' 
+                    : 'bg-white border-2 border-transparent shadow-sm'
+                }`}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <span className="font-bold text-gray-800 text-sm">소프트커버</span>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    coverType === 'soft' ? 'border-yellow-400' : 'border-gray-200'
+                  }`}>
+                    {coverType === 'soft' && <div className="w-3 h-3 rounded-full bg-yellow-400"></div>}
+                  </div>
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed line-clamp-6">
-                  {diaries[0].content}
-                </p>
-              </div>
-            )}
+                <p className="text-[11px] text-gray-400 leading-relaxed">가볍고 부드러운 PUR 무선 제본</p>
+              </button>
+            </div>
+          </div>
+
+          {/* 종이 재질 */}
+          <div className="px-6 mb-8">
+            <h3 className="font-bold text-gray-800 mb-4">종이 재질</h3>
+            <div className="space-y-3">
+              <button 
+                onClick={() => setPaperType('randevu')}
+                className={`w-full p-5 rounded-2xl text-left transition-all ${
+                  paperType === 'randevu' 
+                    ? 'bg-white border-2 border-yellow-400 shadow-md' 
+                    : 'bg-white border-2 border-transparent shadow-sm'
+                }`}
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-gray-800 text-sm">랑데부 190g (고급지)</span>
+                    <p className="text-[11px] text-gray-400 mt-1">코팅 감촉이 부드럽고 잉크 발색이 탁월</p>
+                  </div>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    paperType === 'randevu' ? 'border-yellow-400' : 'border-gray-200'
+                  }`}>
+                    {paperType === 'randevu' && <div className="w-3 h-3 rounded-full bg-yellow-400"></div>}
+                  </div>
+                </div>
+              </button>
+              
+              <button 
+                onClick={() => setPaperType('montblanc')}
+                className={`w-full p-5 rounded-2xl text-left transition-all ${
+                  paperType === 'montblanc' 
+                    ? 'bg-white border-2 border-yellow-400 shadow-md' 
+                    : 'bg-white border-2 border-transparent shadow-sm'
+                }`}
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-gray-800 text-sm">몽블랑 160g (내추럴)</span>
+                    <p className="text-[11px] text-gray-400 mt-1">종이 본연의 결이 살아있는 따뜻한 질감</p>
+                  </div>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    paperType === 'montblanc' ? 'border-yellow-400' : 'border-gray-200'
+                  }`}>
+                    {paperType === 'montblanc' && <div className="w-3 h-3 rounded-full bg-yellow-400"></div>}
+                  </div>
+                </div>
+              </button>
+              
+              <button 
+                onClick={() => setPaperType('arte')}
+                className={`w-full p-5 rounded-2xl text-left transition-all ${
+                  paperType === 'arte' 
+                    ? 'bg-white border-2 border-yellow-400 shadow-md' 
+                    : 'bg-white border-2 border-transparent shadow-sm'
+                }`}
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-gray-800 text-sm">아르떼 210g (프리미엄)</span>
+                    <p className="text-[11px] text-gray-400 mt-1">도톰한 무게감과 깊이 있는 색감 표현</p>
+                  </div>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    paperType === 'arte' ? 'border-yellow-400' : 'border-gray-200'
+                  }`}>
+                    {paperType === 'arte' && <div className="w-3 h-3 rounded-full bg-yellow-400"></div>}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* 주문하기 CTA */}
-        <div className="p-6 bg-white border-t border-gray-100 sticky bottom-0">
+        {/* 하단 주문 버튼 */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
           <button 
             onClick={() => alert('주문 기능은 준비중입니다!')}
-            className="w-full bg-gradient-to-r from-secondary to-orange-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform"
+            className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-[15px] shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2"
           >
-            실물 동화책 주문하기
+            동화책 주문하기 <ChevronRight size={18} />
           </button>
-          <p className="text-center text-xs text-gray-400 mt-3">
-            배송지 입력 및 결제는 다음 단계에서 진행됩니다
-          </p>
         </div>
       </div>
     );

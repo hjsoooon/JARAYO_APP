@@ -125,51 +125,21 @@ const App: React.FC = () => {
     // PHR 타입 배열 (중복 제거)
     const phrTypes = [...new Set(todayRecords.map(r => r.type))];
       
-    // AI 동화 생성 (제목 + 내용)
-    const { title, content: aiStory } = await generateDiaryEntry(profile.name, text, phrSummary);
+    // AI 동화 생성
+    const aiStory = await generateDiaryEntry(profile.name, text, phrSummary);
     
     // 아기 나이 계산 (주 단위)
     const birthDate = new Date(profile.birthDate);
     const ageWeeks = Math.floor((Date.now() - birthDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
     
-    // PHR 기록과 동화 내용에 따라 적절한 이미지 선택
-    const baseUrl = import.meta.env.BASE_URL || '/';
-    let storyImageUrl = profile.photoUrl || ''; // 기본값
-    
-    // PHR 기록 우선순위: BATH > FEED > SLEEP > POOP
-    if (phrTypes.includes('BATH')) {
-      storyImageUrl = `${baseUrl}storybook/bathing.png`;
-    } else if (phrTypes.includes('FEED')) {
-      storyImageUrl = `${baseUrl}storybook/feeding.png`;
-    } else if (phrTypes.includes('SLEEP')) {
-      storyImageUrl = `${baseUrl}storybook/sleeping.png`;
-    } else if (phrTypes.includes('POOP')) {
-      storyImageUrl = `${baseUrl}storybook/playing.png`; // 배변 후 놀이 장면
-    } else {
-      // PHR 기록이 없으면 동화 내용으로 판단
-      const lowerContent = (text + aiStory).toLowerCase();
-      if (lowerContent.includes('목욕') || lowerContent.includes('bath')) {
-        storyImageUrl = `${baseUrl}storybook/bathing.png`;
-      } else if (lowerContent.includes('먹') || lowerContent.includes('수유') || lowerContent.includes('분유') || lowerContent.includes('밥')) {
-        storyImageUrl = `${baseUrl}storybook/feeding.png`;
-      } else if (lowerContent.includes('잠') || lowerContent.includes('자') || lowerContent.includes('꿈')) {
-        storyImageUrl = `${baseUrl}storybook/sleeping.png`;
-      } else if (lowerContent.includes('놀') || lowerContent.includes('장난감')) {
-        storyImageUrl = `${baseUrl}storybook/playing.png`;
-      } else {
-        // 기본: 아침 기상 장면
-        storyImageUrl = `${baseUrl}storybook/morning.png`;
-      }
-    }
-    
     const newDiary: DiaryEntry = {
       id: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
       date: new Date().toISOString(),
-      title: title, // 자동 생성된 감성 제목
+      title: `${profile.name}의 하루`,
       content: aiStory,
       babyContent: text, // 원본 부모 입력
-      mainImageUrl: storyImageUrl, // 동화 내용에 맞는 이미지
-      imageUrl: storyImageUrl,
+      mainImageUrl: profile.photoUrl, // 캐릭터 이미지
+      imageUrl: profile.photoUrl,
       mood: 'happy',
       voiceNotes: [], // 추후 음성 녹음 기능 추가 시 사용
       gallery: [], // 추후 갤러리 기능 추가 시 사용
