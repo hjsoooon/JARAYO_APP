@@ -244,13 +244,13 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
             </div>
           </div>
 
-          {/* 엄마/아빠의 원문 */}
+          {/* 엄마/아빠의 기록 */}
           {selectedStory.babyContent && (
             <div className="px-8 mb-8">
               <div className="flex items-center gap-2 mb-3">
                 <FileText size={16} className="text-yellow-400" />
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  엄마/아빠의 원문
+                  엄마/아빠의 기록
                 </h3>
               </div>
               <div className="bg-yellow-50 rounded-3xl p-6 shadow-sm border-2 border-yellow-100">
@@ -378,18 +378,27 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
               style={{ width: `${progress}%` }} 
             />
           </div>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-400 mb-4">
               한 달의 동화 일기가 모이면 실물 동화책을 배송받을 수 있어요
             </p>
-            {progress >= 100 && (
-              <button 
-                onClick={openBookPreview}
-                className="w-full mt-4 bg-secondary text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-orange-600 transition-colors active:scale-95"
-              >
-                <ShoppingBag size={16} />
-                동화 일기책 만들기
-              </button>
-            )}
+            <button 
+              onClick={openBookPreview}
+              disabled={monthlyDiaries.length === 0}
+              className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
+                monthlyDiaries.length === 0
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : progress >= 100
+                  ? 'bg-secondary text-white hover:bg-orange-600 shadow-lg'
+                  : 'bg-white text-secondary border-2 border-secondary hover:bg-secondary hover:text-white'
+              }`}
+            >
+              <ShoppingBag size={16} />
+              {monthlyDiaries.length === 0 
+                ? '일기를 작성해주세요'
+                : progress >= 100 
+                ? '동화 일기책 만들기' 
+                : '지금 바로 동화책 만들기'}
+            </button>
         </div>
       </div>
 
