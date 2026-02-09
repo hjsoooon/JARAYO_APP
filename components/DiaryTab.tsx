@@ -147,32 +147,30 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
 
   return (
     <div className="h-full flex flex-col bg-cream pb-20">
-      {/* Progress Card - 그리드 뷰일 때만 표시 */}
-      {viewMode === 'grid' && (
-        <div className="px-6 pt-6 pb-2">
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-yellow-100 mb-4">
-            <div className="flex justify-between items-end mb-2">
-              <span className="font-bold text-gray-700">{currentMonth}월 동화책 완성도</span>
-              <span className="text-2xl font-bold text-secondary">{Math.floor(progress)}%</span>
-            </div>
-            <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden mb-3">
-              <div 
-                className="h-full bg-primary transition-all duration-1000" 
-                style={{ width: `${progress}%` }} 
-              />
-            </div>
-            <p className="text-xs text-gray-400">
-              일기가 10개 모이면 실물 동화책을 만들 수 있어요!
-            </p>
-            {progress >= 100 && (
-              <button className="w-full mt-4 bg-secondary text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 animate-bounce">
-                <ShoppingBag size={16} />
-                동화책 주문하러 가기
-              </button>
-            )}
+      {/* Progress Card - 모든 뷰에서 표시 */}
+      <div className="px-6 pt-6 pb-2">
+        <div className="bg-white p-6 rounded-3xl shadow-sm border border-yellow-100 mb-4">
+          <div className="flex justify-between items-end mb-2">
+            <span className="font-bold text-gray-700">{currentMonth}월 동화책 완성도</span>
+            <span className="text-2xl font-bold text-secondary">{Math.floor(progress)}%</span>
           </div>
+          <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden mb-3">
+            <div 
+              className="h-full bg-primary transition-all duration-1000" 
+              style={{ width: `${progress}%` }} 
+            />
+          </div>
+          <p className="text-xs text-gray-400">
+            일기가 10개 모이면 실물 동화책을 만들 수 있어요!
+          </p>
+          {progress >= 100 && (
+            <button className="w-full mt-4 bg-secondary text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 animate-bounce">
+              <ShoppingBag size={16} />
+              동화책 주문하러 가기
+            </button>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Header */}
       <div className="px-6 pt-4 pb-2 flex gap-3 items-center justify-end min-h-[58px]">
