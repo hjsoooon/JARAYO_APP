@@ -108,15 +108,49 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setIsGenerating(true);
-      setTimeout(() => {
-        const genderKey = (profile.gender === 'BOY') ? 'BOY' : 'GIRL';
+    if (!file) return;
+    
+    setIsGenerating(true);
+    
+    // 파일 업로드 후 온보딩에서 입력한 성별에 맞게 랜덤 캐릭터 생성
+    setTimeout(() => {
+      try {
+        // 온보딩에서 입력한 성별 확인 (BOY = 왕자님, GIRL = 공주님)
+        const genderKey = profile.gender === 'BOY' ? 'BOY' : 'GIRL';
         const characterSet = CHARACTERS[genderKey];
-        const randomCharacter = characterSet[Math.floor(Math.random() * characterSet.length)];
-        onUpdateProfile({ photoUrl: randomCharacter, hasCharacter: true });
+        
+        if (!characterSet || characterSet.length === 0) {
+          console.error('캐릭터 세트를 찾을 수 없습니다:', genderKey);
+          setIsGenerating(false);
+          return;
+        }
+        
+        // 랜덤으로 캐릭터 선택
+        const randomIndex = Math.floor(Math.random() * characterSet.length);
+        const randomCharacter = characterSet[randomIndex];
+        
+        if (!randomCharacter) {
+          console.error('랜덤 캐릭터를 생성할 수 없습니다');
+          setIsGenerating(false);
+          return;
+        }
+        
+        // 프로필 업데이트
+        onUpdateProfile({ 
+          photoUrl: randomCharacter, 
+          hasCharacter: true 
+        });
+        
         setIsGenerating(false);
-      }, 2500); 
+      } catch (error) {
+        console.error('캐릭터 생성 중 오류 발생:', error);
+        setIsGenerating(false);
+      }
+    }, 2500); 
+    
+    // 파일 input 초기화 (같은 파일을 다시 선택할 수 있도록)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
