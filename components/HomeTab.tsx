@@ -13,16 +13,18 @@ interface HomeTabProps {
   onUpdateProfile: (updates: Partial<BabyProfile>) => void;
 }
 
+const BASE_URL = import.meta.env.BASE_URL || '/';
+
 const CHARACTERS = {
   BOY: [
-    'https://api.dicebear.com/7.x/bottts/svg?seed=prince1&backgroundColor=b6e3f4&scale=80',
-    'https://api.dicebear.com/7.x/bottts/svg?seed=prince2&backgroundColor=c0aede&scale=80',
-    'https://api.dicebear.com/7.x/bottts/svg?seed=prince3&backgroundColor=d1d4f9&scale=80'
+    `${BASE_URL}characters/prince1.png`,
+    `${BASE_URL}characters/prince2.png`,
+    `${BASE_URL}characters/prince3.png`
   ],
   GIRL: [
-    'https://api.dicebear.com/7.x/bottts/svg?seed=princess1&backgroundColor=ffd5dc&scale=80',
-    'https://api.dicebear.com/7.x/bottts/svg?seed=princess2&backgroundColor=ffe4e1&scale=80',
-    'https://api.dicebear.com/7.x/bottts/svg?seed=princess3&backgroundColor=fff0f5&scale=80'
+    `${BASE_URL}characters/princess1.png`,
+    `${BASE_URL}characters/princess2.png`,
+    `${BASE_URL}characters/princess3.png`
   ]
 };
 
