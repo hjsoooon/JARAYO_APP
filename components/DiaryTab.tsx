@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { DiaryEntry } from '../types';
-import { Search, BookOpen, LayoutGrid, ChevronLeft, ChevronRight, Heart, Clock, Image as ImageIcon, Plus, Calendar as CalendarIcon, Loader2, Play, Pause, ShoppingBag, Moon, Utensils, Baby, Droplet, Volume2, FileText } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Heart, Clock, Image as ImageIcon, Plus, Calendar as CalendarIcon, Loader2, Play, Pause, ShoppingBag, Moon, Utensils, Baby, Droplet, Volume2, FileText } from 'lucide-react';
 
 interface DiaryTabProps {
   diaries: DiaryEntry[];
@@ -43,8 +43,6 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     return filtered;
   }, [diaries, searchQuery, selectedMonth]);
 
-  const displayDiaries = viewMode === 'grid' ? filteredDiaries : diaries;
-  const currentDiary = displayDiaries[currentIndex];
 
   // PHR 아이콘 가져오기
   const getPHRIcons = (diary: DiaryEntry) => {
@@ -66,22 +64,11 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     setViewMode('bookPreview');
   };
 
-  const handlePrevDay = () => {
-    if (currentIndex < displayDiaries.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handleNextDay = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
   const handleGridClick = (diary: DiaryEntry) => {
-    const index = displayDiaries.findIndex(d => d.id === diary.id);
+    const index = filteredDiaries.findIndex(d => d.id === diary.id);
     setCurrentIndex(index !== -1 ? index : 0);
-    setViewMode('single');
+    setSelectedStory(diary);
+    setViewMode('storybook'); // 바로 스토리북 모드로 이동
   };
 
   const formatDate = (dateStr: string) => {
@@ -99,30 +86,20 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     return date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace(/\. /g, '.');
   };
 
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-  };
-
   const togglePlayStory = () => {
-    if (!currentDiary) return;
+    if (!selectedStory) return;
     
     if (isPlaying) {
       window.speechSynthesis.cancel();
       setIsPlaying(false);
     } else {
-      const utterance = new SpeechSynthesisUtterance(currentDiary.content);
+      const utterance = new SpeechSynthesisUtterance(selectedStory.content);
       utterance.lang = 'ko-KR';
       utterance.rate = 1.0;
       utterance.onend = () => setIsPlaying(false);
       window.speechSynthesis.speak(utterance);
       setIsPlaying(true);
     }
-  };
-
-  const openStorybook = (diary: DiaryEntry) => {
-    setSelectedStory(diary);
-    setViewMode('storybook');
   };
 
   // 동화책 시안 페이지
@@ -219,13 +196,17 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     );
   }
 
-  // 스토리북 뷰
+  // 스토리북 뷰 (오디오북)
   if (viewMode === 'storybook' && selectedStory) {
     return (
       <div className="h-full flex flex-col bg-cream">
         <div className="px-6 pt-4 pb-2 flex items-center justify-center h-[58px] bg-cream sticky top-0 z-10">
           <button 
-            onClick={() => setViewMode('single')} 
+            onClick={() => {
+              setViewMode('grid');
+              window.speechSynthesis.cancel(); // 음성 중지
+              setIsPlaying(false);
+            }} 
             className="absolute left-6 p-2 -ml-2 rounded-full hover:bg-yellow-100 transition-colors"
           >
             <ChevronLeft size={24} />
@@ -234,6 +215,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         </div>
 
         <div className="flex-1 overflow-y-auto pb-10">
+          {/* 표지 이미지 */}
           <div className="relative w-full aspect-[4/3] bg-white shadow-lg mb-8 rounded-b-[2.5rem] overflow-hidden">
             <img 
               src={selectedStory.mainImageUrl || selectedStory.imageUrl} 
@@ -243,20 +225,126 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             <div className="absolute bottom-6 left-8 right-20 text-white">
               <h1 className="text-3xl font-bold leading-tight drop-shadow-lg">{selectedStory.title}</h1>
+              <p className="text-sm mt-2 opacity-90 drop-shadow">{formatDate(selectedStory.date)}</p>
             </div>
             <button 
               onClick={togglePlayStory}
-              className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/40 shadow-lg hover:bg-white/50 transition-all active:scale-95"
+              className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/40 shadow-lg hover:bg-white/50 transition-all active:scale-95"
             >
-              {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-0.5" />}
+              {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-0.5" />}
             </button>
           </div>
 
-          <div className="px-8 prose prose-stone max-w-none">
-            <p className="text-gray-700 leading-[2.0] text-[16px] text-justify whitespace-pre-line first-letter:text-5xl first-letter:text-secondary first-letter:mr-3 first-letter:float-left">
-              {selectedStory.content}
-            </p>
+          {/* 동화 본문 */}
+          <div className="px-8 mb-8">
+            <div className="bg-white rounded-3xl p-8 shadow-sm">
+              <p className="text-gray-700 leading-[2.0] text-[17px] text-justify whitespace-pre-line first-letter:text-6xl first-letter:font-bold first-letter:text-secondary first-letter:mr-3 first-letter:float-left first-letter:leading-[1]">
+                {selectedStory.content}
+              </p>
+            </div>
           </div>
+
+          {/* 엄마/아빠의 원문 */}
+          {selectedStory.babyContent && (
+            <div className="px-8 mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <FileText size={16} className="text-yellow-400" />
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  엄마/아빠의 원문
+                </h3>
+              </div>
+              <div className="bg-yellow-50 rounded-3xl p-6 shadow-sm border-2 border-yellow-100">
+                <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                  "{selectedStory.babyContent}"
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* PHR 요약 */}
+          {selectedStory.phrSummary && selectedStory.phrSummary.length > 0 && (
+            <div className="px-8 mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <Heart size={16} className="text-red-400" />
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Today's Activities
+                </h3>
+              </div>
+              <div className="flex gap-3 overflow-x-auto no-scrollbar">
+                {selectedStory.phrSummary.map((type, idx) => (
+                  <div key={idx} className="bg-white rounded-2xl p-4 shadow-sm flex flex-col items-center gap-2 min-w-[100px]">
+                    <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
+                      {type === 'SLEEP' && <Moon size={20} className="text-indigo-400" />}
+                      {type === 'FEED' && <Utensils size={20} className="text-orange-400" />}
+                      {type === 'POOP' && <Baby size={20} className="text-yellow-500" />}
+                      {type === 'BATH' && <Droplet size={20} className="text-blue-400" />}
+                    </div>
+                    <span className="text-xs font-bold text-gray-600">
+                      {type === 'SLEEP' && '수면'}
+                      {type === 'FEED' && '수유'}
+                      {type === 'POOP' && '배변'}
+                      {type === 'BATH' && '목욕'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 갤러리 */}
+          {selectedStory.gallery && selectedStory.gallery.length > 0 && (
+            <div className="px-8 mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <ImageIcon size={16} className="text-yellow-400" />
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  Gallery
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {selectedStory.gallery.map((imgUrl, idx) => (
+                  <div key={idx} className="aspect-square rounded-2xl overflow-hidden bg-white shadow-sm">
+                    <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 네비게이션 버튼 */}
+        <div className="px-8 pb-8 flex gap-4">
+          <button
+            onClick={() => {
+              if (currentIndex < filteredDiaries.length - 1) {
+                const nextDiary = filteredDiaries[currentIndex + 1];
+                setCurrentIndex(currentIndex + 1);
+                setSelectedStory(nextDiary);
+                window.speechSynthesis.cancel();
+                setIsPlaying(false);
+              }
+            }}
+            disabled={currentIndex >= filteredDiaries.length - 1}
+            className="flex-1 py-4 rounded-2xl border-2 border-gray-200 bg-white flex items-center justify-center gap-2 text-gray-600 font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
+          >
+            <ChevronLeft size={20} />
+            이전 일기
+          </button>
+          <button
+            onClick={() => {
+              if (currentIndex > 0) {
+                const prevDiary = filteredDiaries[currentIndex - 1];
+                setCurrentIndex(currentIndex - 1);
+                setSelectedStory(prevDiary);
+                window.speechSynthesis.cancel();
+                setIsPlaying(false);
+              }
+            }}
+            disabled={currentIndex <= 0}
+            className="flex-1 py-4 rounded-2xl border-2 border-gray-200 bg-white flex items-center justify-center gap-2 text-gray-600 font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
+          >
+            다음 일기
+            <ChevronRight size={20} />
+          </button>
         </div>
       </div>
     );
@@ -345,207 +433,10 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
           </div>
         )}
         
-        {viewMode === 'single' && <div className="flex-1"></div>}
-
-        <div className="bg-white p-1.5 rounded-full flex items-center shadow-sm shrink-0 h-[48px] border border-white">
-          <button 
-            onClick={() => setViewMode('single')}
-            className={`w-10 h-full rounded-full flex items-center justify-center transition-all ${
-              viewMode === 'single' ? 'bg-yellow-100 text-yellow-600' : 'text-gray-300 hover:text-gray-400'
-            }`}
-          >
-            <BookOpen size={20} strokeWidth={2.5} />
-          </button>
-          <button 
-            onClick={() => setViewMode('grid')}
-            className={`w-10 h-full rounded-full flex items-center justify-center transition-all ${
-              viewMode === 'grid' ? 'bg-yellow-100 text-yellow-600' : 'text-gray-300 hover:text-gray-400'
-            }`}
-          >
-            <LayoutGrid size={20} strokeWidth={2.5} />
-          </button>
-        </div>
       </div>
 
-      {/* Content */}
-      {viewMode === 'single' ? (
-        <div className="flex-1 overflow-y-auto no-scrollbar pt-2">
-          {/* Date Navigation */}
-          <div className="flex justify-center mb-8 px-6 mt-4">
-            <div className="bg-white px-8 py-3 rounded-full flex items-center gap-8 shadow-sm">
-              <button 
-                onClick={handlePrevDay} 
-                disabled={currentIndex >= displayDiaries.length - 1}
-                className="text-gray-800 hover:text-gray-600 disabled:opacity-20 transition-colors"
-              >
-                <ChevronLeft size={24} strokeWidth={3} />
-              </button>
-              <div className="flex items-center gap-2 text-gray-800 font-bold text-lg">
-                <CalendarIcon size={20} className="text-yellow-400" />
-                <span>{formatDate(currentDiary.date)}</span>
-              </div>
-              <button 
-                onClick={handleNextDay} 
-                disabled={currentIndex <= 0}
-                className="text-gray-800 hover:text-gray-600 disabled:opacity-20 transition-colors"
-              >
-                <ChevronRight size={24} strokeWidth={3} />
-              </button>
-            </div>
-          </div>
-
-          <div className="px-6 pb-10">
-            {/* Title */}
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-yellow-100 text-yellow-600 text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider">
-                  Today's Story
-                </span>
-              </div>
-              <h2 className="text-[28px] font-black text-gray-800 leading-tight">
-                {currentDiary.title}
-              </h2>
-            </div>
-
-            {/* Main Image */}
-            <div className="bg-white p-3 rounded-[2.5rem] shadow-lg mb-8">
-              <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-yellow-50">
-                <img 
-                  src={currentDiary.mainImageUrl || currentDiary.imageUrl} 
-                  alt="Diary cover" 
-                  className="w-full h-full object-cover" 
-                />
-                <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                  <Heart size={12} className="text-red-400 fill-red-400" />
-                  <span className="text-[11px] font-bold text-gray-800">
-                    {formatDateShort(currentDiary.date)} 기록
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Story Content */}
-            <div className="px-2 mb-10">
-              <button
-                onClick={() => openStorybook(currentDiary)}
-                className="w-full text-left"
-              >
-                <p className="text-gray-700 leading-[1.8] text-lg whitespace-pre-line font-medium">
-                  {(currentDiary.babyContent || currentDiary.content).slice(0, 200)}
-                  {(currentDiary.babyContent || currentDiary.content).length > 200 && '...'}
-                </p>
-                {(currentDiary.babyContent || currentDiary.content).length > 200 && (
-                  <span className="text-secondary text-sm font-bold mt-2 inline-block">
-                    전체보기 →
-                  </span>
-                )}
-              </button>
-            </div>
-
-            {/* PHR 타임라인 */}
-            {currentDiary.phrSummary && currentDiary.phrSummary.length > 0 && (
-              <div className="mb-10">
-                <div className="flex items-center gap-2 mb-4 px-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    Today's Activities
-                  </h3>
-                </div>
-                
-                <div className="bg-white rounded-[2rem] p-6 shadow-sm">
-                  <div className="space-y-4">
-                    {currentDiary.phrSummary.map((type, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-                          {type === 'SLEEP' && <Moon size={18} className="text-indigo-400" />}
-                          {type === 'FEED' && <Utensils size={18} className="text-orange-400" />}
-                          {type === 'POOP' && <Baby size={18} className="text-yellow-500" />}
-                          {type === 'BATH' && <Droplet size={18} className="text-blue-400" />}
-                        </div>
-                        <div className="flex-1">
-                          <span className="text-sm font-bold text-gray-800">
-                            {type === 'SLEEP' && '수면'}
-                            {type === 'FEED' && '수유'}
-                            {type === 'POOP' && '배변'}
-                            {type === 'BATH' && '목욕'}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 원문 보기 */}
-            {currentDiary.babyContent && (
-              <div className="mb-10">
-                <div className="flex items-center gap-2 mb-4 px-2">
-                  <FileText size={16} className="text-yellow-400" />
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    엄마/아빠의 기록
-                  </h3>
-                </div>
-                
-                <div className="bg-yellow-50 rounded-[2rem] p-6 shadow-sm border-2 border-yellow-100">
-                  <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
-                    {currentDiary.babyContent}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Voice Timeline */}
-            {currentDiary.voiceNotes && currentDiary.voiceNotes.length > 0 && (
-              <div className="mb-10">
-                <div className="flex items-center gap-2 mb-4 px-2">
-                  <Volume2 size={16} className="text-yellow-400" />
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    Voice Timeline
-                  </h3>
-                </div>
-                
-                <div className="bg-white rounded-[2rem] p-6 shadow-sm">
-                  <div className="space-y-6">
-                    {currentDiary.voiceNotes.map((note) => (
-                      <div key={note.id} className="relative pl-6 border-l-2 border-yellow-100 last:border-0 pb-1">
-                        <div className="absolute -left-[7px] top-0.5 w-3 h-3 rounded-full bg-white border-4 border-yellow-300"></div>
-                        <span className="text-[10px] font-bold text-yellow-400 flex items-center gap-1 mb-1.5 uppercase tracking-wide">
-                          <Clock size={12} />
-                          {formatTime(note.timestamp)}
-                        </span>
-                        <p className="text-gray-800 text-sm leading-6">"{note.transcript}"</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Gallery */}
-            {currentDiary.gallery && currentDiary.gallery.length > 0 && (
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-4 px-2">
-                  <ImageIcon size={16} className="text-yellow-400" />
-                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    Today's Gallery
-                  </h3>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {currentDiary.gallery.map((imgUrl, idx) => (
-                    <div key={idx} className="aspect-square rounded-[2rem] overflow-hidden bg-white shadow-sm border border-white">
-                      <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        // Grid View
-        <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4">
+      {/* Content - Grid View */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4">
           <div className="grid grid-cols-2 gap-4 pb-24">
             {displayDiaries.map((diary) => (
               <button 
@@ -583,7 +474,6 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
             ))}
           </div>
         </div>
-      )}
     </div>
   );
 };
