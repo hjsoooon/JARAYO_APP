@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Onboarding } from './components/Onboarding';
-import { Layout } from './components/Layout';
-import { HomeTab } from './components/HomeTab';
-import { DiaryTab } from './components/DiaryTab';
-import { ChatTab } from './components/ChatTab';
-import { ReportTab } from './components/ReportTab';
-import { PHRModal } from './components/PHRModal';
-import { BabyProfile, PHRRecord, RecordType, DiaryEntry } from './types';
-import { generateDiaryEntry } from './services/geminiService';
+import { Onboarding } from './components/Onboarding.tsx';
+import { Layout } from './components/Layout.tsx';
+import { HomeTab } from './components/HomeTab.tsx';
+import { DiaryTab } from './components/DiaryTab.tsx';
+import { ChatTab } from './components/ChatTab.tsx';
+import { ReportTab } from './components/ReportTab.tsx';
+import { PHRModal } from './components/PHRModal.tsx';
+import { BabyProfile, PHRRecord, RecordType, DiaryEntry } from './types.ts';
+import { generateDiaryEntry } from './services/geminiService.ts';
 
 const App: React.FC = () => {
   const [profile, setProfile] = useState<BabyProfile | null>(null);
