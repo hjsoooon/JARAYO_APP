@@ -15,14 +15,14 @@ interface HomeTabProps {
 
 const CHARACTERS = {
   BOY: [
-    'https://images.unsplash.com/photo-1617331140180-e8262094733a?q=80&w=300&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1544126592-807daa2b565b?q=80&w=300&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1519238263530-99bbe187c909?q=80&w=300&auto=format&fit=crop'
+    'https://api.dicebear.com/7.x/bottts/svg?seed=prince1&backgroundColor=b6e3f4&scale=80',
+    'https://api.dicebear.com/7.x/bottts/svg?seed=prince2&backgroundColor=c0aede&scale=80',
+    'https://api.dicebear.com/7.x/bottts/svg?seed=prince3&backgroundColor=d1d4f9&scale=80'
   ],
   GIRL: [
-    'https://images.unsplash.com/photo-1596854407944-bf87a6f78585?q=80&w=300&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=300&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=300&auto=format&fit=crop'
+    'https://api.dicebear.com/7.x/bottts/svg?seed=princess1&backgroundColor=ffd5dc&scale=80',
+    'https://api.dicebear.com/7.x/bottts/svg?seed=princess2&backgroundColor=ffe4e1&scale=80',
+    'https://api.dicebear.com/7.x/bottts/svg?seed=princess3&backgroundColor=fff0f5&scale=80'
   ]
 };
 
