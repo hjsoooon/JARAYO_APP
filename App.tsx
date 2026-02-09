@@ -116,11 +116,14 @@ const App: React.FC = () => {
     const today = new Date().toDateString();
     const todayRecords = records.filter(r => new Date(r.timestamp).toDateString() === today);
     
-    // PHR 요약
+    // PHR 요약 텍스트
     const phrSummary = todayRecords
       .slice(0, 5)
       .map(r => `${r.type}: ${r.value || ''}`)
       .join(', ');
+    
+    // PHR 타입 배열 (중복 제거)
+    const phrTypes = [...new Set(todayRecords.map(r => r.type))];
       
     // AI 동화 생성
     const aiStory = await generateDiaryEntry(profile.name, text, phrSummary);
@@ -141,6 +144,7 @@ const App: React.FC = () => {
       voiceNotes: [], // 추후 음성 녹음 기능 추가 시 사용
       gallery: [], // 추후 갤러리 기능 추가 시 사용
       babyAgeWeeks: ageWeeks,
+      phrSummary: phrTypes, // PHR 아이콘 표시용
     };
 
     setDiaries([newDiary, ...diaries]);
