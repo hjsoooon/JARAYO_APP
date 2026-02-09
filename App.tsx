@@ -30,7 +30,18 @@ const App: React.FC = () => {
     if (savedRecords) {
       setRecords(JSON.parse(savedRecords));
     }
+    const savedDiaries = localStorage.getItem('jarayo_diaries');
+    if (savedDiaries) {
+      setDiaries(JSON.parse(savedDiaries));
+    }
   }, []);
+
+  // Save diaries to localStorage whenever they change
+  useEffect(() => {
+    if (diaries.length > 0) {
+      localStorage.setItem('jarayo_diaries', JSON.stringify(diaries));
+    }
+  }, [diaries]);
 
   const handleOnboardingComplete = (newProfile: BabyProfile) => {
     setProfile(newProfile);
@@ -101,18 +112,35 @@ const App: React.FC = () => {
   const handleGenerateDiary = async (text: string) => {
     if (!profile) return;
     
-    const phrSummary = records
+    // 오늘 날짜의 PHR 기록 가져오기
+    const today = new Date().toDateString();
+    const todayRecords = records.filter(r => new Date(r.timestamp).toDateString() === today);
+    
+    // PHR 요약
+    const phrSummary = todayRecords
       .slice(0, 5)
       .map(r => `${r.type}: ${r.value || ''}`)
       .join(', ');
       
+    // AI 동화 생성
     const aiStory = await generateDiaryEntry(profile.name, text, phrSummary);
     
+    // 아기 나이 계산 (주 단위)
+    const birthDate = new Date(profile.birthDate);
+    const ageWeeks = Math.floor((Date.now() - birthDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+    
     const newDiary: DiaryEntry = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleDateString(),
-      title: `${profile.name}의 모험`,
+      id: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
+      date: new Date().toISOString(),
+      title: `${profile.name}의 하루`,
       content: aiStory,
+      babyContent: text, // 원본 부모 입력
+      mainImageUrl: profile.photoUrl, // 캐릭터 이미지
+      imageUrl: profile.photoUrl,
+      mood: 'happy',
+      voiceNotes: [], // 추후 음성 녹음 기능 추가 시 사용
+      gallery: [], // 추후 갤러리 기능 추가 시 사용
+      babyAgeWeeks: ageWeeks,
     };
 
     setDiaries([newDiary, ...diaries]);
