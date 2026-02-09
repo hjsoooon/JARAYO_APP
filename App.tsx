@@ -125,8 +125,8 @@ const App: React.FC = () => {
     // PHR 타입 배열 (중복 제거)
     const phrTypes = [...new Set(todayRecords.map(r => r.type))];
       
-    // AI 동화 생성
-    const aiStory = await generateDiaryEntry(profile.name, text, phrSummary);
+    // AI 동화 생성 (제목 + 내용)
+    const { title, content: aiStory } = await generateDiaryEntry(profile.name, text, phrSummary);
     
     // 아기 나이 계산 (주 단위)
     const birthDate = new Date(profile.birthDate);
@@ -165,7 +165,7 @@ const App: React.FC = () => {
     const newDiary: DiaryEntry = {
       id: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
       date: new Date().toISOString(),
-      title: `${profile.name}의 하루`,
+      title: title, // 자동 생성된 감성 제목
       content: aiStory,
       babyContent: text, // 원본 부모 입력
       mainImageUrl: storyImageUrl, // 동화 내용에 맞는 이미지
