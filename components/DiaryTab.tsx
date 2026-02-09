@@ -350,7 +350,9 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     );
   }
 
-  // 로딩 상태
+  // 빈 상태
+  const isEmpty = filteredDiaries.length === 0;
+  
   if (diaries.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-cream px-6 text-center">
@@ -436,9 +438,18 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
       </div>
 
       {/* Content - Grid View */}
-      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4">
+      {isEmpty ? (
+        <div className="flex-1 flex flex-col items-center justify-center opacity-60 px-6 text-center">
+          <BookOpen size={56} className="text-yellow-300 mb-6" strokeWidth={1.5} />
+          <p className="font-bold text-xl text-gray-800">
+            {searchQuery ? "검색된 이야기가 없어요." : "이번 달 기록된 이야기가 없어요."}
+          </p>
+          {!searchQuery && <p className="text-sm mt-3 text-gray-500">홈에서 오늘의 질문에 답해보세요.</p>}
+        </div>
+      ) : (
+        <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4">
           <div className="grid grid-cols-2 gap-4 pb-24">
-            {displayDiaries.map((diary) => (
+            {filteredDiaries.map((diary) => (
               <button 
                 key={diary.id} 
                 onClick={() => handleGridClick(diary)} 
@@ -474,6 +485,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
             ))}
           </div>
         </div>
+      )}
     </div>
   );
 };
