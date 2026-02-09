@@ -17,6 +17,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
   const [coverType, setCoverType] = useState<'hard' | 'soft'>('hard');
   const [paperType, setPaperType] = useState<'randevu' | 'montblanc' | 'arte'>('randevu');
+  const [showOrderComplete, setShowOrderComplete] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // 월별 진행도 계산
@@ -278,10 +279,33 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
           </div>
         </div>
 
+        {/* 주문 완료 팝업 */}
+        {showOrderComplete && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowOrderComplete(false)} />
+            <div className="relative bg-white rounded-3xl p-8 mx-6 max-w-sm w-full shadow-2xl text-center z-10">
+              <div className="text-6xl mb-4">📚</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">동화책 주문이 완료되었습니다!</h3>
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+                소중한 동화책이 정성껏 제작되어<br/>빠른 시일 내에 배송될 예정이에요.
+              </p>
+              <button
+                onClick={() => {
+                  setShowOrderComplete(false);
+                  setViewMode('grid');
+                }}
+                className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-[15px] active:scale-95 transition-transform"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* 하단 주문 버튼 */}
         <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
           <button 
-            onClick={() => alert('주문 기능은 준비중입니다!')}
+            onClick={() => setShowOrderComplete(true)}
             className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-[15px] shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2"
           >
             동화책 주문하기 <ChevronRight size={18} />
