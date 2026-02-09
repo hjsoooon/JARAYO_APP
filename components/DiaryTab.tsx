@@ -303,7 +303,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         )}
 
         {/* 하단 주문 버튼 */}
-        <div className="sticky bottom-0 left-0 right-0 p-6 pb-24 bg-gradient-to-t from-white via-white to-white/0">
+        <div className="sticky bottom-20 left-0 right-0 px-6 pt-6 pb-2 bg-gradient-to-t from-white via-white to-white/0">
           <button 
             onClick={() => setShowOrderComplete(true)}
             className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-[15px] shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2"
