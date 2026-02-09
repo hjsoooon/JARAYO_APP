@@ -1,0 +1,8 @@
+{
+  "name": "JARAYO_APP",
+  "description": "A parenting app where records become fairytales. Tracks PHR and provides AI coaching.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
