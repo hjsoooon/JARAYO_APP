@@ -244,8 +244,12 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {/* Floating Character Area (Updated for bigger size and no circle) */}
       <section className="px-6 py-10 text-center flex flex-col items-center">
         {/* D-Day Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#FFD93D] to-[#FFB347] rounded-full shadow-lg shadow-orange-200/50">
-          <span className="text-2xl font-bold text-white drop-shadow-sm">D+{diffDays}일</span>
+        <div className="mb-6 flex items-center gap-2 animate-in fade-in zoom-in duration-500">
+          <span className="text-lg animate-pulse">✨</span>
+          <span className="text-3xl font-black bg-gradient-to-r from-[#FFB347] to-[#FFD93D] bg-clip-text text-transparent drop-shadow-sm">
+            D+{diffDays}일
+          </span>
+          <span className="text-lg animate-pulse">✨</span>
         </div>
 
         <div 
