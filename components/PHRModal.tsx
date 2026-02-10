@@ -310,10 +310,28 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
                 href="https://hjsoooon.github.io/poopscan/#/camera-ready" 
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-4 bg-yellow-100 text-yellow-800 rounded-xl font-bold"
+                className="relative flex items-center justify-center gap-3 w-full py-5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-bold shadow-lg overflow-hidden group active:scale-95 transition-transform"
               >
-                <Camera size={20} />
-                AI 배변 스캔하기
+                {/* AI 느낌의 배경 효과 */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-indigo-500/20 animate-pulse"></div>
+                <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
+                
+                {/* 컨텐츠 */}
+                <div className="relative flex items-center gap-3">
+                  <Camera size={22} className="relative z-10" />
+                  <span className="text-3xl relative z-10">💩</span>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[15px] font-bold">AI 배변 스캔하기</span>
+                      <div className="flex gap-0.5">
+                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse"></div>
+                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse [animation-delay:0.2s]"></div>
+                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse [animation-delay:0.4s]"></div>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-white/70 mt-0.5 font-medium">AI가 건강 상태를 분석해드려요</p>
+                  </div>
+                </div>
               </a>
             )}
           </div>
