@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { BabyProfile, PHRRecord, RecordType, FeedType, PoopType } from '../types';
-import { Settings, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2 } from 'lucide-react';
+import { UserCircle, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2 } from 'lucide-react';
 
 interface HomeTabProps {
   profile: BabyProfile;
@@ -11,6 +11,7 @@ interface HomeTabProps {
   onGenerateDiary: (text: string) => void;
   onGoToReport: (date: Date) => void;
   onUpdateProfile: (updates: Partial<BabyProfile>) => void;
+  onOpenSettings?: () => void;
 }
 
 const BASE_URL = import.meta.env.BASE_URL || '/';
@@ -45,7 +46,8 @@ export const HomeTab: React.FC<HomeTabProps> = ({
   onEditRecord, 
   onGenerateDiary,
   onGoToReport,
-  onUpdateProfile
+  onUpdateProfile,
+  onOpenSettings
 }) => {
   const [showReply, setShowReply] = useState(false);
   const [replyText, setReplyText] = useState('');
@@ -229,8 +231,11 @@ export const HomeTab: React.FC<HomeTabProps> = ({
             <h1 className="text-lg font-bold text-gray-800">{profile.name}의 하루</h1>
             <span className="text-xs text-amber-500 font-semibold">D+{diffDays}일</span>
           </div>
-          <button className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
-            <Settings size={18} />
+          <button 
+            onClick={onOpenSettings}
+            className="w-11 h-11 rounded-full bg-amber-50 flex items-center justify-center text-amber-400 hover:bg-amber-100 hover:text-amber-600 transition-colors"
+          >
+            <UserCircle size={22} strokeWidth={1.8} />
           </button>
         </div>
       </header>

@@ -6,12 +6,14 @@ import { DiaryTab } from './components/DiaryTab.tsx';
 import { ChatTab } from './components/ChatTab.tsx';
 import { ReportTab } from './components/ReportTab.tsx';
 import { PHRModal } from './components/PHRModal.tsx';
+import { SettingsPage } from './components/SettingsPage.tsx';
 import { BabyProfile, PHRRecord, RecordType, DiaryEntry } from './types.ts';
 import { generateDiaryEntry } from './services/geminiService.ts';
 
 const App: React.FC = () => {
   const [profile, setProfile] = useState<BabyProfile | null>(null);
   const [activeTab, setActiveTab] = useState('home');
+  const [showSettings, setShowSettings] = useState(false);
   const [records, setRecords] = useState<PHRRecord[]>([]);
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
   
@@ -53,6 +55,17 @@ const App: React.FC = () => {
     const newProfile = { ...profile, ...updates };
     setProfile(newProfile);
     localStorage.setItem('jarayo_profile', JSON.stringify(newProfile));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('jarayo_profile');
+    localStorage.removeItem('jarayo_records');
+    localStorage.removeItem('jarayo_diaries');
+    setProfile(null);
+    setRecords([]);
+    setDiaries([]);
+    setShowSettings(false);
+    setActiveTab('home');
   };
 
   const handleQuickAdd = (type: RecordType, subtype?: string) => {
@@ -167,6 +180,7 @@ const App: React.FC = () => {
             onEditRecord={handleEditRecord}
             onGenerateDiary={handleGenerateDiary}
             onUpdateProfile={handleUpdateProfile}
+            onOpenSettings={() => setShowSettings(true)}
             onGoToReport={(date) => {
                 setActiveTab('report');
             }}
@@ -188,6 +202,18 @@ const App: React.FC = () => {
       <Layout activeTab={activeTab} onTabChange={setActiveTab}>
         {renderContent()}
       </Layout>
+
+      {/* 설정 페이지 (풀스크린 오버레이) */}
+      {showSettings && profile && (
+        <div className="fixed inset-0 z-[80] max-w-md mx-auto">
+          <SettingsPage 
+            profile={profile}
+            onBack={() => setShowSettings(false)}
+            onUpdateProfile={handleUpdateProfile}
+            onLogout={handleLogout}
+          />
+        </div>
+      )}
 
       <PHRModal 
         isOpen={isPHRModalOpen}
