@@ -18,6 +18,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   const [coverType, setCoverType] = useState<'hard' | 'soft'>('hard');
   const [paperType, setPaperType] = useState<'randevu' | 'montblanc' | 'arte'>('randevu');
   const [showOrderComplete, setShowOrderComplete] = useState(false);
+  const [showPoopScan, setShowPoopScan] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // 월별 진행도 계산

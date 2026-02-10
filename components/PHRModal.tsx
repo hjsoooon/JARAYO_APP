@@ -15,6 +15,7 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
   const [subtype, setSubtype] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [memo, setMemo] = useState('');
+  const [showPoopScan, setShowPoopScan] = useState(false);
   
   // Time states
   const [startTime, setStartTime] = useState('');
@@ -306,10 +307,8 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
             </div>
             
             {subtype === 'POO' && (
-              <a 
-                href="https://hjsoooon.github.io/poopscan/#/camera-ready" 
-                target="_blank"
-                rel="noreferrer"
+              <button
+                onClick={() => setShowPoopScan(true)}
                 className="relative flex items-center justify-center gap-3 w-full py-5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-bold shadow-lg overflow-hidden group active:scale-95 transition-transform"
               >
                 {/* AI 느낌의 배경 효과 */}
@@ -332,7 +331,7 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
                     <p className="text-[10px] text-white/70 mt-0.5 font-medium">AI가 건강 상태를 분석해드려요</p>
                   </div>
                 </div>
-              </a>
+              </button>
             )}
           </div>
         );
@@ -415,6 +414,34 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
             </button>
         )}
       </div>
+
+      {/* AI 배변 스캔 모달 */}
+      {showPoopScan && (
+        <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm flex items-center justify-center">
+          <div className="absolute inset-0" onClick={() => setShowPoopScan(false)} />
+          <div className="relative w-full h-full max-w-md bg-white rounded-t-3xl overflow-hidden flex flex-col">
+            {/* 헤더 */}
+            <div className="flex-none px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-between">
+              <h3 className="font-bold text-white text-lg">AI 배변 스캔</h3>
+              <button 
+                onClick={() => setShowPoopScan(false)}
+                className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+              >
+                <X size={20} className="text-white" />
+              </button>
+            </div>
+            
+            {/* iframe */}
+            <div className="flex-1 overflow-hidden">
+              <iframe 
+                src="https://hjsoooon.github.io/poopscan/#/camera-ready"
+                className="w-full h-full border-0"
+                title="AI Poop Scan"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
