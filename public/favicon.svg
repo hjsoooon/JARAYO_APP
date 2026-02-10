@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF9E6"/>
+      <stop offset="100%" stop-color="#FFE5B4"/>
+    </linearGradient>
+  </defs>
+  <!-- Round background -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg)" stroke="#FFD93D" stroke-width="2.5"/>
+  <!-- Body -->
+  <ellipse cx="32" cy="38" rx="14" ry="13" fill="#FFD93D"/>
+  <!-- Head -->
+  <circle cx="32" cy="23" r="12" fill="#FFE066"/>
+  <!-- Head highlight -->
+  <circle cx="28" cy="19" r="4" fill="#FFF4CC" opacity="0.6"/>
+  <!-- Eyes -->
+  <ellipse cx="27" cy="23" rx="2.2" ry="2.5" fill="#5D4037"/>
+  <ellipse cx="37" cy="23" rx="2.2" ry="2.5" fill="#5D4037"/>
+  <!-- Eye shine -->
+  <circle cx="27.8" cy="22" r="0.9" fill="white"/>
+  <circle cx="37.8" cy="22" r="0.9" fill="white"/>
+  <!-- Beak -->
+  <ellipse cx="32" cy="27" rx="2.5" ry="1.5" fill="#FFB347"/>
+  <!-- Cheeks -->
+  <circle cx="23" cy="26" r="2.5" fill="#FFB5B5" opacity="0.5"/>
+  <circle cx="41" cy="26" r="2.5" fill="#FFB5B5" opacity="0.5"/>
+  <!-- Wings -->
+  <ellipse cx="19" cy="37" rx="4" ry="7" fill="#FFC93D" transform="rotate(-15 19 37)"/>
+  <ellipse cx="45" cy="37" rx="4" ry="7" fill="#FFC93D" transform="rotate(15 45 37)"/>
+  <!-- Diaper -->
+  <path d="M22 42 Q27 50 32 50 Q37 50 42 42 L42 44 Q37 52 32 52 Q27 52 22 44 Z" fill="white" opacity="0.8"/>
+  <!-- Feet -->
+  <ellipse cx="27" cy="50" rx="4" ry="1.5" fill="#FFB347"/>
+  <ellipse cx="37" cy="50" rx="4" ry="1.5" fill="#FFB347"/>
+  <!-- Hair tuft -->
+  <path d="M29 12 Q30 8 32 11 Q34 7 35 12" fill="#FFD93D" stroke="#FFC93D" stroke-width="0.5"/>
+</svg>
