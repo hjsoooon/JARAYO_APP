@@ -254,7 +254,7 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
                             inputMode="numeric"
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            className="w-full text-center text-4xl font-bold py-4 border-b-2 border-gray-200 focus:border-secondary outline-none text-secondary"
+                            className="w-full text-center text-4xl font-bold py-4 border-b-2 border-orange-100 focus:border-[#FFB347] outline-none text-[#FFB347]"
                         />
                     </div>
                 )
@@ -268,7 +268,7 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
                         key={t}
                         onClick={() => setSubtype(t)}
                         className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${
-                        subtype === t ? 'bg-white text-secondary shadow-sm' : 'text-gray-400'
+                        subtype === t ? 'bg-white text-[#FFB347] shadow-sm' : 'text-gray-400'
                         }`}
                     >
                         {t === 'FORMULA' ? '분유' : '이유식'}
@@ -390,7 +390,7 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
         {!(mode === 'CREATE' && subtype === 'BREAST') && (
             <button
             onClick={handleSave}
-            className="w-full mt-6 bg-primary text-yellow-900 py-4 rounded-2xl font-bold text-lg shadow-md active:scale-95 transition-transform"
+            className="w-full mt-6 bg-gradient-to-r from-[#FFD93D] to-[#FFB347] text-white py-4 rounded-2xl font-bold text-lg shadow-md shadow-orange-200/50 active:scale-95 transition-transform"
             >
             저장하기
             </button>

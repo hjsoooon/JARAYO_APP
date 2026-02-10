@@ -255,7 +255,7 @@ export const ChatTab: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#FAFAF7]">
+    <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
       {showConfetti && <ConfettiEffect />}
       
       {/* 가이드 상세 보기 모달 */}
@@ -389,7 +389,7 @@ export const ChatTab: React.FC = () => {
       )}
 
       {/* 상단 헤더 (공통) */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3 shrink-0">
+      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3 shrink-0">
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-lg font-bold text-gray-800">AI 코치</h1>
           <div className="flex items-center gap-2">
@@ -627,7 +627,7 @@ export const ChatTab: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col overflow-hidden bg-[#FAFAF7] tab-content-enter">
+          <div className="flex-1 flex flex-col overflow-hidden bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9] tab-content-enter">
             <div className="px-4 py-4">
               {(() => {
                 const userMessages = messages.filter(m => m.role === 'user');

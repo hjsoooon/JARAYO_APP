@@ -246,8 +246,8 @@ export const ReportTab: React.FC<ReportTabProps> = ({ records }) => {
   };
 
   return (
-    <div className="pb-24 bg-cream">
-       <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+    <div className="pb-24 bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
+       <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
          <div className="flex items-center justify-between">
            <h1 className="text-lg font-bold text-gray-800">분석 리포트</h1>
          </div>

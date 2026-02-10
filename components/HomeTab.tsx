@@ -227,16 +227,16 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       )}
 
       {/* Header */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 px-5 pt-4 pb-3 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-lg font-bold text-gray-800">{profile.name}의 하루</h1>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-[#FFB347] to-[#FFD93D] bg-clip-text text-transparent">{profile.name}의 하루</h1>
           </div>
           <button 
             onClick={onOpenSettings}
-            className="w-11 h-11 rounded-full bg-amber-50 flex items-center justify-center text-amber-400 hover:bg-amber-100 hover:text-amber-600 transition-colors"
+            className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#FFE5B4] to-[#FFD93D] flex items-center justify-center text-orange-600 hover:shadow-md transition-all active:scale-95"
           >
-            <UserCircle size={22} strokeWidth={1.8} />
+            <UserCircle size={22} strokeWidth={2} />
           </button>
         </div>
       </header>
@@ -244,8 +244,8 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {/* Floating Character Area (Updated for bigger size and no circle) */}
       <section className="px-6 py-10 text-center flex flex-col items-center">
         {/* D-Day Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full shadow-lg">
-          <span className="text-2xl font-bold text-white">D+{diffDays}일</span>
+        <div className="mb-6 inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#FFD93D] to-[#FFB347] rounded-full shadow-lg shadow-orange-200/50">
+          <span className="text-2xl font-bold text-white drop-shadow-sm">D+{diffDays}일</span>
         </div>
 
         <div 
@@ -290,19 +290,19 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         <div className="h-10" />
 
         {/* TODAY'S QUESTION CARD */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-[40px] p-8 shadow-[0_15px_40px_rgba(0,0,0,0.06)] border border-white/50 text-center w-full max-w-sm mx-auto mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="bg-white/95 backdrop-blur-sm rounded-[32px] p-8 shadow-[0_8px_32px_rgba(255,179,71,0.15)] border-2 border-orange-100 text-center w-full max-w-sm mx-auto mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
            <div className="flex items-center justify-center gap-1.5 mb-6">
-              <Sparkles size={14} className="text-[#FF5C8A]" fill="#FF5C8A" />
-              <span className="text-[10px] font-bold text-[#FF5C8A] uppercase tracking-[0.2em]">Today's Question</span>
+              <Sparkles size={14} className="text-[#FFB347]" fill="#FFB347" />
+              <span className="text-[10px] font-bold text-[#FFB347] uppercase tracking-[0.2em]">Today's Question</span>
            </div>
            
-           <h2 className="text-[18px] font-bold text-gray-800 mb-8 leading-[1.6]">
+           <h2 className="text-[18px] font-bold text-gray-700 mb-8 leading-[1.6]">
               {todayQuestion}
            </h2>
            
            <button 
              onClick={() => setShowReply(true)}
-             className="w-full bg-[#2D2926] text-white py-4 rounded-[24px] font-bold text-[15px] shadow-md active:scale-95 transition-all"
+             className="w-full bg-gradient-to-r from-[#FFD93D] to-[#FFB347] text-white py-4 rounded-[20px] font-bold text-[15px] shadow-md shadow-orange-200/50 active:scale-95 transition-all"
            >
              답장하기
            </button>
@@ -312,22 +312,22 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {/* Quick Actions (PHR) */}
       <section className="px-6 py-4 relative">
         <div className="flex justify-between items-center mb-6">
-           <h2 className="text-lg font-bold text-gray-800">기록 (PHR)</h2>
-           <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100">
-              <button onClick={() => handleDateChange(-1)} className="p-1.5 text-gray-400 hover:text-secondary hover:bg-orange-50 rounded-xl transition-colors"><ChevronLeft size={16} /></button>
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50/50 rounded-lg">
-                 <CalendarIcon size={14} className="text-secondary" /><span className="text-[13px] font-bold text-gray-700">{isToday ? '오늘' : currentDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}</span>
+           <h2 className="text-lg font-bold text-gray-700">기록 (PHR)</h2>
+           <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl shadow-sm border border-orange-100">
+              <button onClick={() => handleDateChange(-1)} className="p-1.5 text-gray-400 hover:text-[#FFB347] hover:bg-orange-50 rounded-xl transition-colors"><ChevronLeft size={16} /></button>
+              <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-50/50 rounded-lg">
+                 <CalendarIcon size={14} className="text-[#FFB347]" /><span className="text-[13px] font-bold text-gray-700">{isToday ? '오늘' : currentDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}</span>
               </div>
-              <button onClick={() => handleDateChange(1)} className={`p-1.5 rounded-xl transition-colors ${isToday ? 'text-gray-200 cursor-not-allowed' : 'text-gray-400 hover:text-secondary hover:bg-orange-50'}`} disabled={isToday}><ChevronRight size={16} /></button>
+              <button onClick={() => handleDateChange(1)} className={`p-1.5 rounded-xl transition-colors ${isToday ? 'text-gray-200 cursor-not-allowed' : 'text-gray-400 hover:text-[#FFB347] hover:bg-orange-50'}`} disabled={isToday}><ChevronRight size={16} /></button>
            </div>
         </div>
 
         <div className="grid grid-cols-4 gap-3 relative z-50">
           {[
-            { id: 'SLEEP', icon: Moon, label: '수면', color: 'bg-indigo-50 text-indigo-500 border-indigo-100' },
-            { id: 'FEED', icon: Utensils, label: '수유', color: 'bg-orange-50 text-orange-500 border-orange-100' },
-            { id: 'POOP', icon: Baby, label: '배변', color: 'bg-yellow-50 text-yellow-600 border-yellow-100' },
-            { id: 'BATH', icon: Droplet, label: '목욕', color: 'bg-blue-50 text-blue-500 border-blue-100' },
+            { id: 'SLEEP', icon: Moon, label: '수면', color: 'bg-[#E8D4F8] text-[#9B6EC9] border-[#D4B8E8]' },
+            { id: 'FEED', icon: Utensils, label: '수유', color: 'bg-[#FFE5B4] text-[#FFB347] border-[#FFD9A1]' },
+            { id: 'POOP', icon: Baby, label: '배변', color: 'bg-[#FFF4CC] text-[#FFD93D] border-[#FFE9A8]' },
+            { id: 'BATH', icon: Droplet, label: '목욕', color: 'bg-[#D4E8F1] text-[#6BA5C4] border-[#B8D8E8]' },
           ].map((action) => {
              const Icon = action.icon;
              const isDimmed = activeMenu && activeMenu !== action.id;
@@ -396,25 +396,25 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       <section className="px-6 pb-20 mt-6">
          <div className="flex justify-between items-center mb-4">
             <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.1em]">Today's Timeline</h3>
-            <button onClick={() => onGoToReport(currentDate)} className="text-xs text-secondary font-bold flex items-center gap-1">분석 리포트 <ChevronRight size={14} /></button>
+            <button onClick={() => onGoToReport(currentDate)} className="text-xs text-[#FFB347] font-bold flex items-center gap-1">분석 리포트 <ChevronRight size={14} /></button>
          </div>
-         <div className="relative border-l-2 border-gray-100 ml-4 space-y-4">
+         <div className="relative border-l-2 border-orange-100 ml-4 space-y-4">
             {filteredRecords.length === 0 ? (
                 <div className="pl-8 py-10 text-center text-gray-300 text-sm italic">기록된 내용이 없습니다.</div>
             ) : (
                 filteredRecords.map((rec) => (
                     <div key={rec.id} className="relative pl-8 cursor-pointer group" onClick={() => onEditRecord(rec)}>
-                        <div className={`absolute -left-[9px] top-4 w-4 h-4 rounded-full border-4 border-white shadow-sm z-10 ${rec.type === 'SLEEP' ? 'bg-indigo-400' : rec.type === 'FEED' ? 'bg-orange-400' : rec.type === 'POOP' ? 'bg-yellow-400' : 'bg-blue-400'}`} />
-                        <div className="bg-white p-5 rounded-[24px] shadow-sm border border-gray-50 group-active:scale-[0.98] transition-all">
+                        <div className={`absolute -left-[9px] top-4 w-4 h-4 rounded-full border-4 border-white shadow-sm z-10 ${rec.type === 'SLEEP' ? 'bg-[#9B6EC9]' : rec.type === 'FEED' ? 'bg-[#FFB347]' : rec.type === 'POOP' ? 'bg-[#FFD93D]' : 'bg-[#6BA5C4]'}`} />
+                        <div className="bg-white/90 p-5 rounded-[20px] shadow-sm border-2 border-orange-50 group-active:scale-[0.98] transition-all">
                            <div className="flex justify-between items-center mb-2">
-                              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-lg ${rec.type === 'SLEEP' ? 'bg-indigo-50 text-indigo-600' : rec.type === 'FEED' ? 'bg-orange-50 text-orange-600' : rec.type === 'POOP' ? 'bg-yellow-50 text-yellow-600' : 'bg-blue-50 text-blue-600'}`}>
+                              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-lg ${rec.type === 'SLEEP' ? 'bg-[#E8D4F8] text-[#9B6EC9]' : rec.type === 'FEED' ? 'bg-[#FFE5B4] text-[#FFB347]' : rec.type === 'POOP' ? 'bg-[#FFF4CC] text-[#FFD93D]' : 'bg-[#D4E8F1] text-[#6BA5C4]'}`}>
                                  {rec.type === 'FEED' ? (rec.subtype === 'BREAST' ? '모유' : (rec.subtype === 'FORMULA' ? '분유' : '이유식')) : rec.type === 'POOP' ? (rec.subtype === 'PEE' ? '소변' : '대변') : rec.type === 'SLEEP' ? '수면' : '목욕'}
                               </span>
                               <span className="text-[10px] text-gray-400 font-bold">{new Date(rec.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                            </div>
                            <div className="flex items-center gap-2">
                               {getTimelineIcon(rec)}
-                              <p className="text-gray-800 text-sm font-bold">{getRecordSummary(rec)}</p>
+                              <p className="text-gray-700 text-sm font-bold">{getRecordSummary(rec)}</p>
                            </div>
                         </div>
                     </div>
@@ -427,14 +427,14 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {showReply && (
          <div className="fixed inset-0 z-[100] flex items-end justify-center">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setShowReply(false)} />
-            <div className="bg-white w-full max-w-md rounded-t-[40px] p-8 z-10 animate-slide-up pb-safe shadow-2xl">
-               <div className="w-12 h-1.5 bg-gray-100 rounded-full mx-auto mb-8" />
-               <h3 className="font-bold text-2xl mb-2 text-center text-gray-800">아기에게 답장하기</h3>
-               <p className="text-center text-gray-400 text-sm mb-8 leading-relaxed">들려주시는 따뜻한 이야기가<br/>아이의 소중한 동화 일기가 됩니다.</p>
-               <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} className="w-full bg-gray-50 border border-gray-100 rounded-3xl p-5 min-h-[160px] outline-none text-gray-700 resize-none mb-6 focus:ring-4 ring-primary/20 transition-all text-sm" placeholder="오늘 우리 아기, 정말 잘 자고 잘 먹었어..." />
+            <div className="bg-gradient-to-b from-white to-[#FFF9E6] w-full max-w-md rounded-t-[40px] p-8 z-10 animate-slide-up pb-safe shadow-2xl border-t-4 border-orange-200">
+               <div className="w-12 h-1.5 bg-orange-200 rounded-full mx-auto mb-8" />
+               <h3 className="font-bold text-2xl mb-2 text-center bg-gradient-to-r from-[#FFB347] to-[#FFD93D] bg-clip-text text-transparent">아기에게 답장하기</h3>
+               <p className="text-center text-gray-500 text-sm mb-8 leading-relaxed">들려주시는 따뜻한 이야기가<br/>아이의 소중한 동화 일기가 됩니다.</p>
+               <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} className="w-full bg-white border-2 border-orange-100 rounded-3xl p-5 min-h-[160px] outline-none text-gray-700 resize-none mb-6 focus:ring-4 ring-orange-200/50 focus:border-orange-200 transition-all text-sm" placeholder="오늘 우리 아기, 정말 잘 자고 잘 먹었어..." />
                <div className="flex gap-4">
-                  <button onClick={() => { setIsRecording(!isRecording); if (!isRecording) setTimeout(() => { setReplyText("오늘 우리 아기는 낮잠을 두 번이나 잤어. 분유도 160ml 씩 잘 먹었구!"); setIsRecording(false); }, 2500); }} className={`p-5 rounded-3xl transition-all shadow-md active:scale-95 ${isRecording ? 'bg-rose-500 text-white' : 'bg-gray-100 text-gray-400'}`}><Mic size={24} /></button>
-                  <button onClick={handleReplySubmit} disabled={!replyText && !isRecording} className="flex-1 bg-[#2D2926] text-white font-bold rounded-3xl flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg active:scale-95 transition-all text-lg"><span>동화 생성</span><Send size={20} /></button>
+                  <button onClick={() => { setIsRecording(!isRecording); if (!isRecording) setTimeout(() => { setReplyText("오늘 우리 아기는 낮잠을 두 번이나 잤어. 분유도 160ml 씩 잘 먹었구!"); setIsRecording(false); }, 2500); }} className={`p-5 rounded-3xl transition-all shadow-md active:scale-95 ${isRecording ? 'bg-rose-400 text-white' : 'bg-orange-50 text-orange-400'}`}><Mic size={24} /></button>
+                  <button onClick={handleReplySubmit} disabled={!replyText && !isRecording} className="flex-1 bg-gradient-to-r from-[#FFD93D] to-[#FFB347] text-white font-bold rounded-3xl flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg shadow-orange-200/50 active:scale-95 transition-all text-lg"><span>동화 생성</span><Send size={20} /></button>
                </div>
             </div>
          </div>

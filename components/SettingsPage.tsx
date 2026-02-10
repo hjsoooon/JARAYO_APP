@@ -49,7 +49,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
 
   // 서브 헤더
   const SubHeader = ({ title, onBack: onSubBack }: { title: string; onBack: () => void }) => (
-    <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+    <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
       <div className="flex items-center">
         <button 
           onClick={onSubBack}
@@ -65,7 +65,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   // 이름 수정 화면
   if (view === 'editName') {
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="이름 수정" onBack={() => setView('main')} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">아이 이름</label>
@@ -98,7 +98,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   // 전화번호 수정 화면
   if (view === 'editPhone') {
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="전화번호 수정" onBack={() => setView('main')} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">전화번호</label>
@@ -124,7 +124,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   // 생년월일 수정 화면
   if (view === 'editBirth') {
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="생년월일 수정" onBack={() => setView('main')} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">아이 생년월일</label>
@@ -161,7 +161,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
       { value: 'OTHER', label: '기타', emoji: '👶' },
     ];
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="성별 수정" onBack={() => setView('main')} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-3">아이 성별</label>
@@ -193,7 +193,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   // 공동 육아자 초대 화면
   if (view === 'coParent') {
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="공동 육아자 초대" onBack={() => setView('main')} />
         <div className="flex-1 px-5 py-6">
           {/* 초대 안내 */}
@@ -255,7 +255,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   // 아이 추가 화면
   if (view === 'addChild') {
     return (
-      <div className="h-full flex flex-col bg-[#FAFAF7]">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         <SubHeader title="아이 추가" onBack={() => setView('coParent')} />
         <div className="flex-1 px-5 py-6">
           <div className="bg-white rounded-2xl p-5 border border-gray-100">
@@ -311,12 +311,12 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
 
   // 메인 설정 화면
   return (
-    <div className="h-full flex flex-col bg-[#FAFAF7]">
+    <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
       <input type="file" ref={fileInputRef} accept="image/*" className="hidden" onChange={handleProfilePhotoChange} />
       <input type="file" ref={babyFileInputRef} accept="image/*" className="hidden" onChange={handleBabyPhotoChange} />
 
       {/* 헤더 */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
         <div className="flex items-center">
           <button 
             onClick={onBack}

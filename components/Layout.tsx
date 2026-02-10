@@ -16,13 +16,13 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
   ];
 
   return (
-    <div className="flex flex-col h-screen bg-[#FAFAF7] max-w-md mx-auto shadow-2xl overflow-hidden relative">
+    <div className="flex flex-col h-screen bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9] max-w-md mx-auto shadow-2xl overflow-hidden relative">
       <main className="flex-1 overflow-y-auto no-scrollbar">
         {children}
       </main>
       
       {/* Bottom Navigation Bar */}
-      <nav className="bg-white border-t border-gray-100 flex items-center justify-around py-2.5 px-2 z-50">
+      <nav className="bg-white/90 backdrop-blur-lg border-t border-orange-100 flex items-center justify-around py-3 px-2 z-50 shadow-lg">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -30,13 +30,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className="flex flex-col items-center gap-0.5 flex-1 py-1 transition-all active:scale-90"
+              className="flex flex-col items-center gap-1 flex-1 py-1 transition-all active:scale-90"
             >
-              <Icon 
-                size={22} 
-                className={`transition-colors duration-200 ${isActive ? 'text-amber-500' : 'text-gray-300'}`} 
-              />
-              <span className={`text-[10px] font-bold transition-colors duration-200 ${isActive ? 'text-amber-500' : 'text-gray-300'}`}>
+              <div className={`p-2 rounded-2xl transition-all duration-200 ${isActive ? 'bg-gradient-to-br from-[#FFD93D] to-[#FFB347] shadow-md' : 'bg-transparent'}`}>
+                <Icon 
+                  size={20} 
+                  className={`transition-colors duration-200 ${isActive ? 'text-white' : 'text-gray-400'}`} 
+                />
+              </div>
+              <span className={`text-[10px] font-bold transition-colors duration-200 ${isActive ? 'text-[#FFB347]' : 'text-gray-400'}`}>
                 {tab.label}
               </span>
             </button>

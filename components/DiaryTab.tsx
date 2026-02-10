@@ -109,9 +109,9 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   // 동화책 만들기 페이지
   if (viewMode === 'bookPreview') {
     return (
-      <div className="h-full flex flex-col bg-cream">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         {/* 헤더 */}
-        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 px-5 pt-4 pb-3 shadow-sm">
           <div className="flex items-center">
             <button 
               onClick={() => setViewMode('grid')} 
@@ -321,8 +321,8 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   // 스토리북 뷰 (오디오북)
   if (viewMode === 'storybook' && selectedStory) {
     return (
-      <div className="h-full flex flex-col bg-cream">
-        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
+        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
           <div className="flex items-center">
             <button 
               onClick={() => {
@@ -479,8 +479,8 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   
   if (diaries.length === 0) {
     return (
-      <div className="h-full flex flex-col bg-cream">
-        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+      <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
+        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
           </div>
@@ -495,9 +495,9 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-cream pb-20">
+    <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9] pb-20">
       {/* Header */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
         </div>
