@@ -290,49 +290,55 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
         );
       case 'POOP':
         return (
-          <div className="space-y-6">
-            <div className="flex gap-4">
+          <div className="space-y-4">
+            <div className="flex gap-3">
                {(['PEE', 'POO'] as PoopType[]).map((t) => (
                  <button
                    key={t}
                    onClick={() => setSubtype(t)}
-                   className={`flex-1 py-4 rounded-2xl border-2 font-bold transition-all ${
+                   className={`flex-1 py-4 rounded-2xl border-2 font-bold transition-all flex flex-col items-center gap-1 ${
                      subtype === t 
-                       ? 'border-yellow-500 bg-yellow-50 text-yellow-800' 
+                       ? t === 'POO' 
+                         ? 'border-amber-400 bg-amber-50 text-amber-800' 
+                         : 'border-yellow-500 bg-yellow-50 text-yellow-800'
                        : 'border-gray-100 bg-white text-gray-400'
                    }`}
                  >
-                   {t === 'PEE' ? '소변' : '대변'}
+                   <span className="text-2xl">{t === 'PEE' ? '💧' : '💩'}</span>
+                   <span>{t === 'PEE' ? '소변' : '대변'}</span>
                  </button>
                ))}
             </div>
             
             {subtype === 'POO' && (
-              <button
-                onClick={() => setShowPoopScan(true)}
-                className="relative flex items-center justify-center gap-3 w-full py-5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl font-bold shadow-lg overflow-hidden group active:scale-95 transition-transform"
-              >
-                {/* AI 느낌의 배경 효과 */}
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-indigo-500/20 animate-pulse"></div>
-                <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
-                
-                {/* 컨텐츠 */}
-                <div className="relative flex items-center gap-3">
-                  <Camera size={22} className="relative z-10" />
-                  <span className="text-3xl relative z-10">💩</span>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] font-bold">AI 배변 스캔하기</span>
-                      <div className="flex gap-0.5">
-                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse"></div>
-                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse [animation-delay:0.2s]"></div>
-                        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse [animation-delay:0.4s]"></div>
-                      </div>
-                    </div>
-                    <p className="text-[10px] text-white/70 mt-0.5 font-medium">AI가 건강 상태를 분석해드려요</p>
+              <div className="space-y-3">
+                {/* AI 푸스캔 유도 카드 */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg">🤖</span>
+                    <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">AI 추천</span>
                   </div>
+                  <p className="text-sm text-amber-800 font-medium mb-1">사진을 찍으면 AI가 건강 상태를 분석해드려요!</p>
+                  <p className="text-[11px] text-amber-600/70 mb-3">색상, 굳기, 양 등을 자동으로 체크합니다</p>
+                  
+                  <button
+                    onClick={() => setShowPoopScan(true)}
+                    className="relative flex items-center justify-center gap-3 w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-xl font-bold shadow-lg shadow-orange-200/50 overflow-hidden active:scale-[0.97] transition-transform"
+                  >
+                    <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.15)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
+                    <Camera size={20} className="relative z-10" />
+                    <span className="relative z-10 text-[15px]">AI 푸스캔 시작하기</span>
+                    <span className="relative z-10 text-lg">📸</span>
+                  </button>
                 </div>
-              </button>
+
+                {/* 또는 수동 기록 안내 */}
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-px bg-gray-200"></div>
+                  <span className="text-[11px] text-gray-400 font-medium">또는 직접 기록</span>
+                  <div className="flex-1 h-px bg-gray-200"></div>
+                </div>
+              </div>
             )}
           </div>
         );

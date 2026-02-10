@@ -33,17 +33,24 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
     
     try {
       const result = await analyzePoopImage(imageData);
-      saveToHistory(imageData, result);
-      refreshHistory();
-      setState(prev => ({ 
-        ...prev, 
+      
+      // 히스토리 저장 (실패해도 결과 표시에 영향 없음)
+      try {
+        saveToHistory(imageData, result);
+        refreshHistory();
+      } catch (historyError) {
+        console.warn("History save failed:", historyError);
+      }
+      
+      setState({
         view: 'result', 
+        capturedImage: imageData,
         analysis: result 
-      }));
+      });
     } catch (error) {
       console.error("Analysis Failed", error);
       alert("분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
-      setState(prev => ({ ...prev, view: 'camera' }));
+      setState({ view: 'camera', capturedImage: null, analysis: null });
     }
   };
 
@@ -84,25 +91,29 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
       )}
 
       {state.view === 'camera' && (
-        <CameraView 
-          onCapture={handleCapture} 
-          isProcessing={false}
-          onPermissionChange={handlePermissionChange}
-          onShowHistory={handleShowHistory}
-          historyCount={history.length}
-        />
+        <div className="flex-1 min-h-0 relative">
+          <CameraView 
+            onCapture={handleCapture} 
+            isProcessing={false}
+            onPermissionChange={handlePermissionChange}
+            onShowHistory={handleShowHistory}
+            historyCount={history.length}
+          />
+        </div>
       )}
       
       {state.view === 'analyzing' && (
-        <CameraView 
-          onCapture={() => {}} 
-          isProcessing={true} 
-          capturedImage={state.capturedImage}
-        />
+        <div className="flex-1 min-h-0 relative">
+          <CameraView 
+            onCapture={() => {}} 
+            isProcessing={true} 
+            capturedImage={state.capturedImage}
+          />
+        </div>
       )}
 
       {state.view === 'result' && state.capturedImage && state.analysis && (
-        <div className="overflow-y-auto h-full">
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <ResultView 
             image={state.capturedImage} 
             analysis={state.analysis} 
@@ -112,12 +123,14 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
       )}
 
       {state.view === 'history' && (
-        <HistoryView
-          history={history}
-          onBack={handleReset}
-          onSelectItem={handleSelectHistoryItem}
-          onHistoryChange={refreshHistory}
-        />
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <HistoryView
+            history={history}
+            onBack={handleReset}
+            onSelectItem={handleSelectHistoryItem}
+            onHistoryChange={refreshHistory}
+          />
+        </div>
       )}
     </div>
   );
