@@ -4,6 +4,7 @@ import {
   ChevronLeft, ChevronRight, Camera, UserCircle, Phone, Calendar, 
   Baby, Users, UserPlus, LogOut, Trash2, PencilLine, ImagePlus
 } from 'lucide-react';
+import { AppHeader } from './AppHeader';
 
 interface SettingsPageProps {
   profile: BabyProfile;
@@ -49,17 +50,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
 
   // 서브 헤더
   const SubHeader = ({ title, onBack: onSubBack }: { title: string; onBack: () => void }) => (
-    <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-      <div className="flex items-center">
-        <button 
-          onClick={onSubBack}
-          className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <h1 className="text-lg font-bold text-gray-800">{title}</h1>
-      </div>
-    </header>
+    <AppHeader variant="left" title={title} onBack={onSubBack} />
   );
 
   // 이름 수정 화면
@@ -316,17 +307,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
       <input type="file" ref={babyFileInputRef} accept="image/*" className="hidden" onChange={handleBabyPhotoChange} />
 
       {/* 헤더 */}
-      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-        <div className="flex items-center">
-          <button 
-            onClick={onBack}
-            className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <h1 className="text-lg font-bold text-gray-800">설정</h1>
-        </div>
-      </header>
+      <AppHeader variant="left" title="설정" onBack={onBack} />
 
       <div className="flex-1 overflow-y-auto pb-20">
         {/* ===== 프로필 수정 섹션 ===== */}

@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { PHRRecord, RecordType } from '../types';
 // Fixed: Added Soup and X to imports from lucide-react
 import { Activity, Moon, Utensils, Baby, Droplet, ChevronLeft, ChevronRight, ExternalLink, Info, Milk, Sparkles, Coffee, Soup, X } from 'lucide-react';
+import { AppHeader } from './AppHeader';
 
 interface ReportTabProps {
   records: PHRRecord[];
@@ -247,11 +248,7 @@ export const ReportTab: React.FC<ReportTabProps> = ({ records }) => {
 
   return (
     <div className="pb-24 bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-       <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-         <div className="flex items-center justify-between">
-           <h1 className="text-lg font-bold text-gray-800">분석 리포트</h1>
-         </div>
-       </header>
+       <AppHeader variant="center" title="분석 리포트" />
 
        <div className="px-5 pt-4">
        <div className="flex flex-col gap-4 mb-6">

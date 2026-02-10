@@ -1,7 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { BabyProfile, PHRRecord, RecordType, FeedType, PoopType } from '../types';
-import { UserCircle, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2, ScanLine } from 'lucide-react';
+import { UserCircle, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2, ScanLine, Bell } from 'lucide-react';
 import PoopScanApp from './poopscan/PoopScanApp';
+import { AppHeader, HeaderIconButton } from './AppHeader';
 
 interface HomeTabProps {
   profile: BabyProfile;
@@ -227,19 +228,15 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       )}
 
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 px-5 pt-4 pb-3 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold bg-gradient-to-r from-[#FFB347] to-[#FFD93D] bg-clip-text text-transparent">{profile.name}의 하루</h1>
-          </div>
-          <button 
-            onClick={onOpenSettings}
-            className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#FFE5B4] to-[#FFD93D] flex items-center justify-center text-orange-600 hover:shadow-md transition-all active:scale-95"
-          >
-            <UserCircle size={22} strokeWidth={2} />
-          </button>
-        </div>
-      </header>
+      <AppHeader
+        variant="center"
+        title="자라요"
+        rightAction={
+          <HeaderIconButton onClick={onOpenSettings}>
+            <UserCircle size={20} strokeWidth={2} />
+          </HeaderIconButton>
+        }
+      />
 
       {/* Floating Character Area (Updated for bigger size and no circle) */}
       <section className="px-6 py-10 text-center flex flex-col items-center">

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { COACHES, ILLUSTRATION_CARDS, COACH_TO_CATEGORY } from '../constants';
 import { Message, CoachRole, ChecklistItem, InsightReport } from '../types';
 import { getGeminiResponse } from '../services/geminiService_coach';
+import { AppHeader } from './AppHeader';
 
 const ConfettiEffect = () => (
   <div className="fixed inset-0 pointer-events-none z-[200] flex items-center justify-center animate-celebration">
@@ -389,9 +390,10 @@ export const ChatTab: React.FC = () => {
       )}
 
       {/* 상단 헤더 (공통) */}
-      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3 shrink-0">
-        <div className="flex items-center justify-between mb-3">
-          <h1 className="text-lg font-bold text-gray-800">AI 코치</h1>
+      <AppHeader
+        variant="center"
+        title="AI 코치"
+        rightAction={
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1.5">
               {COACHES.slice(0, 3).map(c => (
@@ -403,15 +405,15 @@ export const ChatTab: React.FC = () => {
               <span className="text-[9px] font-bold text-green-600">온라인</span>
             </div>
           </div>
-        </div>
-        
+        }
+      >
         {/* 탭 전환 (세그먼트 컨트롤) */}
-        <div className="flex bg-gray-100 p-1 rounded-xl">
+        <div className="flex bg-[#FFF4E0] p-1 rounded-xl">
           <button 
             onClick={() => setActiveTab('CHATS')} 
             className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
               activeTab === 'CHATS' 
-                ? 'bg-white text-amber-500 shadow-sm' 
+                ? 'bg-white text-[#FFB347] shadow-sm' 
                 : 'text-gray-400'
             }`}
           >
@@ -421,14 +423,14 @@ export const ChatTab: React.FC = () => {
             onClick={() => setActiveTab('INSIGHTS')} 
             className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
               activeTab === 'INSIGHTS' 
-                ? 'bg-white text-amber-500 shadow-sm' 
+                ? 'bg-white text-[#FFB347] shadow-sm' 
                 : 'text-gray-400'
             }`}
           >
             📊 리포트
           </button>
         </div>
-      </header>
+      </AppHeader>
 
       <div className="flex-1 overflow-hidden flex flex-col">
         {activeTab === 'CHATS' ? (

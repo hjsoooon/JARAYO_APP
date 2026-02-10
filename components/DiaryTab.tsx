@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { DiaryEntry } from '../types';
-import { Search, ChevronLeft, ChevronRight, Heart, Clock, Image as ImageIcon, Plus, Calendar as CalendarIcon, Loader2, Play, Pause, ShoppingBag, Moon, Utensils, Baby, Droplet, Volume2, FileText } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Heart, Clock, Image as ImageIcon, Plus, Calendar as CalendarIcon, Loader2, Play, Pause, ShoppingBag, Moon, Utensils, Baby, Droplet, Volume2, FileText, BookOpen } from 'lucide-react';
+import { AppHeader, HeaderIconButton } from './AppHeader';
 
 interface DiaryTabProps {
   diaries: DiaryEntry[];
@@ -111,17 +112,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
         {/* 헤더 */}
-        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 px-5 pt-4 pb-3 shadow-sm">
-          <div className="flex items-center">
-            <button 
-              onClick={() => setViewMode('grid')} 
-              className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <h1 className="text-lg font-bold text-gray-800">동화책 만들기</h1>
-          </div>
-        </header>
+        <AppHeader variant="left" title="동화책 만들기" onBack={() => setViewMode('grid')} />
 
         <div className="flex-1 overflow-y-auto pb-32">
           {/* 표지 미리보기 */}
@@ -322,21 +313,15 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   if (viewMode === 'storybook' && selectedStory) {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-          <div className="flex items-center">
-            <button 
-              onClick={() => {
-                setViewMode('grid');
-                window.speechSynthesis.cancel();
-                setIsPlaying(false);
-              }} 
-              className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <h1 className="text-lg font-bold text-gray-800 truncate">{selectedStory.title}</h1>
-          </div>
-        </header>
+        <AppHeader
+          variant="left"
+          title={selectedStory.title}
+          onBack={() => {
+            setViewMode('grid');
+            window.speechSynthesis.cancel();
+            setIsPlaying(false);
+          }}
+        />
 
         <div className="flex-1 overflow-y-auto pb-10">
           {/* 표지 이미지 */}
@@ -480,11 +465,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   if (diaries.length === 0) {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-        <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
-          </div>
-        </header>
+        <AppHeader variant="center" title="동화 일기" />
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <BookOpen size={56} className="text-yellow-300 mb-6" strokeWidth={1.5} />
           <p className="font-bold text-xl text-gray-800">아직 기록된 이야기가 없어요.</p>
@@ -497,11 +478,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   return (
     <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9] pb-20">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-30 border-b border-orange-100 shadow-sm px-5 pt-4 pb-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
-        </div>
-      </header>
+      <AppHeader variant="center" title="동화 일기" />
 
       {/* Progress Card - 모든 뷰에서 표시 */}
       <div className="px-5 pt-4 pb-2">
