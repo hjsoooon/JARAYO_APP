@@ -113,7 +113,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, captur
   // 카메라 권한이 없는 경우 별도 화면
   if (hasPermission === false) {
     return (
-      <div className="absolute inset-0 bg-gradient-to-b from-amber-50 to-orange-50 flex flex-col safe-area-inset">
+      <div className="w-full h-full bg-gradient-to-b from-amber-50 to-orange-50 flex flex-col safe-area-inset">
         {/* Header */}
         <div className="px-4 flex justify-between items-center" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
           <button 
@@ -244,7 +244,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, captur
   }
 
   return (
-    <div className="absolute inset-0 bg-gradient-to-b from-amber-100/80 to-orange-100/80 flex flex-col safe-area-inset">
+    <div className="w-full h-full bg-gradient-to-b from-amber-100/80 to-orange-100/80 flex flex-col safe-area-inset">
       {/* Viewfinder - 전체 화면 */}
       <div className="flex-1 relative min-h-0 m-3 rounded-3xl overflow-hidden shadow-lg">
         {isProcessing && capturedImage ? (

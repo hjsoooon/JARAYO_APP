@@ -438,8 +438,10 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
       {/* AI 푸스캔 모달 */}
       {showPoopScan && (
-        <div className="fixed inset-0 z-[200] bg-white">
-          <PoopScanApp onClose={() => setShowPoopScan(false)} />
+        <div className="fixed inset-0 z-[200] bg-white flex items-center justify-center">
+          <div className="w-full h-full max-w-md relative">
+            <PoopScanApp onClose={() => setShowPoopScan(false)} />
+          </div>
         </div>
       )}
     </div>
