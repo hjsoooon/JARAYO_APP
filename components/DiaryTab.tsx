@@ -111,15 +111,17 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
     return (
       <div className="h-full flex flex-col bg-cream">
         {/* 헤더 */}
-        <div className="px-6 pt-4 pb-2 flex items-center justify-center h-[58px] bg-cream sticky top-0 z-10">
-          <button 
-            onClick={() => setViewMode('grid')} 
-            className="absolute left-6 p-2 -ml-2 rounded-full hover:bg-yellow-100 transition-colors"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <h2 className="font-bold text-lg text-gray-800">동화책 만들기</h2>
-        </div>
+        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+          <div className="flex items-center">
+            <button 
+              onClick={() => setViewMode('grid')} 
+              className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <h1 className="text-lg font-bold text-gray-800">동화책 만들기</h1>
+          </div>
+        </header>
 
         <div className="flex-1 overflow-y-auto pb-32">
           {/* 표지 미리보기 */}
@@ -320,19 +322,21 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   if (viewMode === 'storybook' && selectedStory) {
     return (
       <div className="h-full flex flex-col bg-cream">
-        <div className="px-6 pt-4 pb-2 flex items-center justify-center h-[58px] bg-cream sticky top-0 z-10">
-          <button 
-            onClick={() => {
-              setViewMode('grid');
-              window.speechSynthesis.cancel(); // 음성 중지
-              setIsPlaying(false);
-            }} 
-            className="absolute left-6 p-2 -ml-2 rounded-full hover:bg-yellow-100 transition-colors"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <h2 className="font-bold text-lg text-gray-800 truncate px-10">{selectedStory.title}</h2>
-        </div>
+        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+          <div className="flex items-center">
+            <button 
+              onClick={() => {
+                setViewMode('grid');
+                window.speechSynthesis.cancel();
+                setIsPlaying(false);
+              }} 
+              className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors mr-3"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <h1 className="text-lg font-bold text-gray-800 truncate">{selectedStory.title}</h1>
+          </div>
+        </header>
 
         <div className="flex-1 overflow-y-auto pb-10">
           {/* 표지 이미지 */}
@@ -475,18 +479,32 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   
   if (diaries.length === 0) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-cream px-6 text-center">
-        <BookOpen size={56} className="text-yellow-300 mb-6" strokeWidth={1.5} />
-        <p className="font-bold text-xl text-gray-800">아직 기록된 이야기가 없어요.</p>
-        <p className="text-sm mt-3 text-gray-500">홈에서 오늘의 질문에 답해보세요.</p>
+      <div className="h-full flex flex-col bg-cream">
+        <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
+          </div>
+        </header>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <BookOpen size={56} className="text-yellow-300 mb-6" strokeWidth={1.5} />
+          <p className="font-bold text-xl text-gray-800">아직 기록된 이야기가 없어요.</p>
+          <p className="text-sm mt-3 text-gray-500">홈에서 오늘의 질문에 답해보세요.</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="h-full flex flex-col bg-cream pb-20">
+      {/* Header */}
+      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-bold text-gray-800">동화 일기</h1>
+        </div>
+      </header>
+
       {/* Progress Card - 모든 뷰에서 표시 */}
-      <div className="px-6 pt-6 pb-2">
+      <div className="px-5 pt-4 pb-2">
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-yellow-100 mb-4">
           <div className="flex justify-between items-end mb-2">
             <span className="font-bold text-gray-700">{currentMonth}월 동화책 완성도</span>
@@ -524,7 +542,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
 
       {/* 월 필터 */}
       {viewMode === 'grid' && (
-        <div className="px-6 pt-2 pb-2">
+        <div className="px-5 pt-2 pb-2">
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => {
               const monthDiaries = diaries.filter(d => new Date(d.date).getMonth() + 1 === month);
@@ -534,10 +552,10 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
                 <button
                   key={month}
                   onClick={() => setSelectedMonth(month)}
-                  className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
                     selectedMonth === month
-                      ? 'bg-yellow-500 text-white shadow-md'
-                      : 'bg-white text-gray-600 hover:bg-yellow-50'
+                      ? 'bg-amber-500 text-white shadow-sm'
+                      : 'bg-white text-gray-500 hover:bg-amber-50'
                   }`}
                 >
                   {month}월 ({monthDiaries.length})
@@ -548,23 +566,22 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         </div>
       )}
 
-      {/* Header */}
-      <div className="px-6 pt-4 pb-2 flex gap-3 items-center justify-end min-h-[58px]">
-        {viewMode === 'grid' && (
-          <div className="flex-1 relative group">
+      {/* 검색 */}
+      {viewMode === 'grid' && (
+        <div className="px-5 pb-2">
+          <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="text-yellow-400 group-focus-within:text-yellow-500 transition-colors" size={20} />
+              <Search className="text-gray-300" size={18} />
             </div>
             <input
-              className="w-full bg-white rounded-full pl-10 pr-4 py-3 text-sm font-bold shadow-sm border border-transparent focus:outline-none focus:border-yellow-300 focus:ring-2 focus:ring-yellow-100 transition-all placeholder-yellow-200 text-gray-800"
-              placeholder="추억 검색하기..."
+              className="w-full bg-white rounded-xl pl-10 pr-4 py-2.5 text-sm shadow-sm border border-gray-100 focus:outline-none focus:border-amber-300 focus:ring-2 focus:ring-amber-50 transition-all placeholder-gray-300 text-gray-800"
+              placeholder="검색..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
-        )}
-        
-      </div>
+        </div>
+      )}
 
       {/* Content - Grid View */}
       {isEmpty ? (
@@ -576,7 +593,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
           {!searchQuery && <p className="text-sm mt-3 text-gray-500">홈에서 오늘의 질문에 답해보세요.</p>}
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4">
+        <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-3">
           <div className="grid grid-cols-2 gap-4 pb-24">
             {filteredDiaries.map((diary) => (
               <button 

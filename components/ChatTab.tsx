@@ -255,7 +255,7 @@ export const ChatTab: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#FFFDF7]">
+    <div className="h-full flex flex-col bg-[#FAFAF7]">
       {showConfetti && <ConfettiEffect />}
       
       {/* 가이드 상세 보기 모달 */}
@@ -389,43 +389,40 @@ export const ChatTab: React.FC = () => {
       )}
 
       {/* 상단 헤더 (공통) */}
-      <header className="px-4 pt-3 pb-2 bg-white border-b border-gray-100 shrink-0">
+      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3 shrink-0">
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2">
+          <h1 className="text-lg font-bold text-gray-800">AI 코치</h1>
+          <div className="flex items-center gap-2">
+            <div className="flex -space-x-1.5">
               {COACHES.slice(0, 3).map(c => (
-                <div key={c.id} className="w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-xs shadow-sm" style={{ background: c.bgColor }}>{c.avatar}</div>
+                <div key={c.id} className="w-5 h-5 rounded-full border-[1.5px] border-white flex items-center justify-center text-[8px]" style={{ background: c.bgColor }}>{c.avatar}</div>
               ))}
             </div>
-            <div>
-              <h1 className="text-lg font-black text-[#E67E22]">Team JARAYO</h1>
-              <span className="text-[10px] text-gray-400">AI 육아 코치</span>
+            <div className="bg-green-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+              <span className="text-[9px] font-bold text-green-600">온라인</span>
             </div>
-          </div>
-          <div className="bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="text-[9px] font-bold text-green-600">온라인</span>
           </div>
         </div>
         
         {/* 탭 전환 (세그먼트 컨트롤) */}
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+        <div className="flex bg-gray-100 p-1 rounded-xl">
           <button 
             onClick={() => setActiveTab('CHATS')} 
             className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
               activeTab === 'CHATS' 
-                ? 'bg-white text-[#F5B041] shadow-sm' 
-                : 'text-gray-500'
+                ? 'bg-white text-amber-500 shadow-sm' 
+                : 'text-gray-400'
             }`}
           >
-            💬 AI코치
+            💬 상담
           </button>
           <button 
             onClick={() => setActiveTab('INSIGHTS')} 
             className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
               activeTab === 'INSIGHTS' 
-                ? 'bg-white text-[#F5B041] shadow-sm' 
-                : 'text-gray-500'
+                ? 'bg-white text-amber-500 shadow-sm' 
+                : 'text-gray-400'
             }`}
           >
             📊 리포트
@@ -630,7 +627,7 @@ export const ChatTab: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col overflow-hidden bg-[#FFFDF7] tab-content-enter">
+          <div className="flex-1 flex flex-col overflow-hidden bg-[#FAFAF7] tab-content-enter">
             <div className="px-4 py-4">
               {(() => {
                 const userMessages = messages.filter(m => m.role === 'user');

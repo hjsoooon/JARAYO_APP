@@ -223,12 +223,16 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       )}
 
       {/* Header */}
-      <header className="flex justify-between items-center px-6 py-4 bg-cream sticky top-0 z-30 shadow-sm border-b border-yellow-100/50">
-        <div className="w-8" />
-        <h1 className="font-cute text-2xl text-yellow-800">D+{diffDays} day</h1>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
-          <Settings size={22} />
-        </button>
+      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-bold text-gray-800">{profile.name}의 하루</h1>
+            <span className="text-xs text-amber-500 font-semibold">D+{diffDays}일</span>
+          </div>
+          <button className="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+            <Settings size={18} />
+          </button>
+        </div>
       </header>
 
       {/* Floating Character Area (Updated for bigger size and no circle) */}

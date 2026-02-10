@@ -246,10 +246,15 @@ export const ReportTab: React.FC<ReportTabProps> = ({ records }) => {
   };
 
   return (
-    <div className="p-6 pb-24 bg-cream">
+    <div className="pb-24 bg-cream">
+       <header className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-5 pt-4 pb-3">
+         <div className="flex items-center justify-between">
+           <h1 className="text-lg font-bold text-gray-800">분석 리포트</h1>
+         </div>
+       </header>
+
+       <div className="px-5 pt-4">
        <div className="flex flex-col gap-4 mb-6">
-          <h1 className="font-cute text-2xl text-yellow-900">분석 리포트</h1>
-          
           <div className="bg-gray-100 p-1.5 rounded-[20px] flex text-[13px] font-bold shadow-inner">
              <button 
                onClick={() => setView('DAILY')}
@@ -297,6 +302,7 @@ export const ReportTab: React.FC<ReportTabProps> = ({ records }) => {
             <ExternalLink className="text-blue-300" size={20} />
          </div>
        </a>
+    </div>
     </div>
   );
 };
