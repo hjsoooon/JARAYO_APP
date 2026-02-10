@@ -136,3 +136,61 @@ export interface InsightReport {
   }[];
   growthMetrics?: GrowthMetric[];
 }
+
+// PoopScan types
+export type AnalysisStatus = 'normal' | 'caution' | 'warning' | 'emergency' | 'invalid';
+
+export type AmountLevel = '소량' | '보통' | '많음';
+export type FirmnessLevel = '딱딱함' | '단단함' | '정상' | '무름' | '묽음';
+export type HydrationLevel = '양호' | '보통' | '주의';
+
+export interface WarningCheck {
+  question: string;
+  isAlert: boolean;
+  detail?: string;
+  type: 'ai' | 'parent';
+}
+
+export interface TrendData {
+  day: string;
+  count: number;
+  status: 'normal' | 'caution' | 'warning' | 'none';
+}
+
+export interface PoopAnalysisResult {
+  status: AnalysisStatus;
+  statusLabel: string;
+  summaryLine: string;
+  firmness: FirmnessLevel;
+  firmnessScore: number;
+  amount: AmountLevel;
+  amountScore: number;
+  color: string;
+  colorHex: string;
+  colorCategory: string;
+  specialFindings: string[];
+  warningChecks: WarningCheck[];
+  weeklyTrend: TrendData[];
+  weeklyAverage: number;
+  todayCount: number;
+  nextActions: string[];
+  hospitalAdvice: string | null;
+  aiInsight: string;
+  analysisTime: string;
+  confidenceScore: number;
+}
+
+export interface PoopScanState {
+  view: 'camera' | 'analyzing' | 'result' | 'history';
+  capturedImage: string | null;
+  analysis: PoopAnalysisResult | null;
+}
+
+export interface PoopHistoryItem {
+  id: string;
+  timestamp: number;
+  date: string;
+  time: string;
+  image: string;
+  analysis: PoopAnalysisResult;
+}
