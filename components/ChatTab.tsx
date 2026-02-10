@@ -388,28 +388,54 @@ export const ChatTab: React.FC = () => {
         </div>
       )}
 
+      {/* 상단 헤더 (공통) */}
+      <header className="px-4 pt-3 pb-2 bg-white border-b border-gray-100 shrink-0">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              {COACHES.slice(0, 3).map(c => (
+                <div key={c.id} className="w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-xs shadow-sm" style={{ background: c.bgColor }}>{c.avatar}</div>
+              ))}
+            </div>
+            <div>
+              <h1 className="text-lg font-black text-[#E67E22]">Team JARAYO</h1>
+              <span className="text-[10px] text-gray-400">AI 육아 코치</span>
+            </div>
+          </div>
+          <div className="bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            <span className="text-[9px] font-bold text-green-600">온라인</span>
+          </div>
+        </div>
+        
+        {/* 탭 전환 (세그먼트 컨트롤) */}
+        <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+          <button 
+            onClick={() => setActiveTab('CHATS')} 
+            className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
+              activeTab === 'CHATS' 
+                ? 'bg-white text-[#F5B041] shadow-sm' 
+                : 'text-gray-500'
+            }`}
+          >
+            💬 AI코치
+          </button>
+          <button 
+            onClick={() => setActiveTab('INSIGHTS')} 
+            className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
+              activeTab === 'INSIGHTS' 
+                ? 'bg-white text-[#F5B041] shadow-sm' 
+                : 'text-gray-500'
+            }`}
+          >
+            📊 리포트
+          </button>
+        </div>
+      </header>
+
       <div className="flex-1 overflow-hidden flex flex-col">
         {activeTab === 'CHATS' ? (
           <div className="flex-1 flex flex-col h-full overflow-hidden chat-container w-full">
-            <header className="px-4 pt-[env(safe-area-inset-top,12px)] pb-3 bg-white/95 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40 shrink-0">
-              <div className="flex items-center justify-between pt-2">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {COACHES.slice(0, 3).map(c => (
-                      <div key={c.id} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[10px] shadow-sm" style={{ background: c.bgColor }}>{c.avatar}</div>
-                    ))}
-                  </div>
-                  <div>
-                    <h1 className="header-title text-[18px] leading-tight">Team JARAYO</h1>
-                    <span className="text-[10px] text-gray-400">AI 육아 코치</span>
-                  </div>
-                </div>
-                <div className="bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                  <span className="text-[9px] font-bold text-green-600">온라인</span>
-                </div>
-              </div>
-            </header>
 
             <div className="flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar px-4 py-4 space-y-4 flex flex-col w-full">
               {messages.length === 0 && (
@@ -605,16 +631,7 @@ export const ChatTab: React.FC = () => {
           </div>
         ) : (
           <div className="flex-1 flex flex-col overflow-hidden bg-[#FFFDF7] tab-content-enter">
-            <header className="bg-white px-4 pt-[env(safe-area-inset-top,12px)] pb-4 rounded-b-[32px] shadow-sm z-20">
-              <div className="flex items-center justify-between pt-2 mb-4">
-                <div>
-                   <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Report</span>
-                   <h1 className="text-[20px] font-black text-[#222]">상담 리포트</h1>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F5B041] to-[#E67E22] flex items-center justify-center">
-                  <span className="text-lg">📊</span>
-                </div>
-              </div>
+            <div className="px-4 py-4">
               {(() => {
                 const userMessages = messages.filter(m => m.role === 'user');
                 const assistantMessages = messages.filter(m => m.role === 'assistant');
@@ -671,11 +688,14 @@ export const ChatTab: React.FC = () => {
                   </div>
                 );
               })()}
-            </header>
+            </div>
 
-            <div ref={insightsContainerRef} className="flex-1 overflow-y-auto hide-scrollbar p-7 space-y-10 pb-20">
+            <div ref={insightsContainerRef} className="flex-1 overflow-y-auto hide-scrollbar px-4 space-y-6 pb-20">
               <section className="fade-in">
-                <h3 className="text-[15px] font-black text-[#222] uppercase tracking-[0.15em] mono mb-5">Chat Insights</h3>
+                <h3 className="text-base font-black text-[#222] mb-4 flex items-center gap-2">
+                  <span>📊</span>
+                  <span>상담 통계</span>
+                </h3>
                 {(() => {
                   const assistantMessages = messages.filter(m => m.role === 'assistant');
                   const totalChats = messages.filter(m => m.role === 'user').length;
@@ -762,7 +782,10 @@ export const ChatTab: React.FC = () => {
               </section>
 
               <section className="fade-in">
-                <h3 className="text-[15px] font-black text-[#222] uppercase tracking-[0.15em] mono mb-5">Action Checklist</h3>
+                <h3 className="text-base font-black text-[#222] mb-4 flex items-center gap-2">
+                  <span>✅</span>
+                  <span>실천 체크리스트</span>
+                </h3>
                 <div className="bg-white rounded-[32px] overflow-hidden shadow-sm border border-gray-50">
                   {dynamicChecklist.map((item) => (
                     <div key={item.id} onClick={() => toggleChecklist(item.id)} className={`flex items-center gap-4 p-5 cursor-pointer border-b border-gray-50 last:border-none transition-all ${item.completed ? 'bg-gray-50/40' : 'hover:bg-gray-50/50'}`}>
@@ -786,34 +809,6 @@ export const ChatTab: React.FC = () => {
           </div>
         )}
       </div>
-
-      <nav className="bg-white border-t border-gray-200 shrink-0 z-50">
-        <div className="flex items-center justify-around py-1.5 pb-[max(6px,env(safe-area-inset-bottom))]">
-          <button 
-            onClick={() => setActiveTab('CHATS')} 
-            className={`flex flex-col items-center gap-0.5 px-6 py-1.5 rounded-xl transition-colors ${
-              activeTab === 'CHATS' ? 'text-[#F5B041]' : 'text-gray-400'
-            }`}
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-            </svg>
-            <span className="text-[10px] font-bold">AI코치</span>
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('INSIGHTS')} 
-            className={`flex flex-col items-center gap-0.5 px-6 py-1.5 rounded-xl transition-colors ${
-              activeTab === 'INSIGHTS' ? 'text-[#F5B041]' : 'text-gray-400'
-            }`}
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-            </svg>
-            <span className="text-[10px] font-bold">리포트</span>
-          </button>
-        </div>
-      </nav>
     </div>
   );
 };
