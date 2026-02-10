@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { BabyProfile, PHRRecord, RecordType, FeedType, PoopType } from '../types';
-import { UserCircle, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2 } from 'lucide-react';
+import { UserCircle, Moon, Utensils, Baby, Droplets, Droplet, MessageCircle, ChevronLeft, ChevronRight, Mic, Send, X, MoreHorizontal, Milk, Coffee, Soup, Sparkles, Trash2, Calendar as CalendarIcon, Camera, Loader2, ScanLine } from 'lucide-react';
+import PoopScanApp from './poopscan/PoopScanApp';
 
 interface HomeTabProps {
   profile: BabyProfile;
@@ -55,6 +56,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [activeMenu, setActiveMenu] = useState<RecordType | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showPoopScan, setShowPoopScan] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -358,7 +360,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                  
                  {/* POOP Sub-menu with Labels */}
                  {activeMenu === 'POOP' && action.id === 'POOP' && (
-                    <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-6 z-[60] animate-in zoom-in duration-200">
+                    <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-5 z-[60] animate-in zoom-in duration-200">
                         <div className="flex flex-col items-center gap-2">
                            <button onClick={() => handleSubtypeClick('POOP', 'PEE')} className="w-16 h-16 rounded-full bg-white border-2 border-sky-200 text-sky-500 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
                               <Droplets size={28} />
@@ -370,6 +372,13 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                               <Trash2 size={28} />
                            </button>
                            <span className="text-[10px] font-bold text-[#92400e] bg-white/95 px-2 py-0.5 rounded-full shadow-sm">대변</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-2">
+                           <button onClick={() => { setActiveMenu(null); setShowPoopScan(true); }} className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 text-purple-600 shadow-xl flex items-center justify-center active:scale-90 transition-transform relative overflow-hidden">
+                              <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.4)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
+                              <ScanLine size={28} className="relative z-10" />
+                           </button>
+                           <span className="text-[10px] font-bold text-purple-600 bg-white/95 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">AI 푸스캔</span>
                         </div>
                     </div>
                  )}
@@ -425,6 +434,13 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                </div>
             </div>
          </div>
+      )}
+
+      {/* AI 푸스캔 모달 */}
+      {showPoopScan && (
+        <div className="fixed inset-0 z-[200] bg-white">
+          <PoopScanApp onClose={() => setShowPoopScan(false)} />
+        </div>
       )}
     </div>
   );

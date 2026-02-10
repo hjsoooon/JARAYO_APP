@@ -314,14 +314,6 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
                  <span className="text-2xl">💩</span>
                  <span className="text-sm">대변</span>
                </button>
-               <button
-                 onClick={() => setShowPoopScan(true)}
-                 className="flex-1 py-4 rounded-2xl border-2 border-purple-200 bg-gradient-to-b from-purple-50 to-indigo-50 font-bold transition-all flex flex-col items-center gap-1 text-purple-700 active:scale-95 relative overflow-hidden"
-               >
-                 <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
-                 <span className="text-2xl relative z-10">🤖</span>
-                 <span className="text-[11px] relative z-10 leading-tight text-center">AI<br/>푸스캔</span>
-               </button>
             </div>
           </div>
         );
