@@ -309,7 +309,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
       {/* 헤더 */}
       <AppHeader variant="left" title="설정" onBack={onBack} />
 
-      <div className="flex-1 overflow-y-auto pb-20">
+      <div className="flex-1 overflow-y-auto">
         {/* ===== 프로필 수정 섹션 ===== */}
         <div className="px-5 pt-5 pb-2">
           <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">프로필 수정</h2>

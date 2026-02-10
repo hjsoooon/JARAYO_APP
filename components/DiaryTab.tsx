@@ -114,7 +114,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         {/* 헤더 */}
         <AppHeader variant="left" title="동화책 만들기" onBack={() => setViewMode('grid')} />
 
-        <div className="flex-1 overflow-y-auto pb-32">
+        <div className="flex-1 overflow-y-auto">
           {/* 표지 미리보기 */}
           <div className="flex justify-center py-8 px-6">
             <div className="w-[200px] bg-white rounded-xl shadow-2xl overflow-hidden">
@@ -297,7 +297,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         )}
 
         {/* 하단 주문 버튼 */}
-        <div className="sticky bottom-20 left-0 right-0 px-6 pt-6 pb-2 bg-gradient-to-t from-white via-white to-white/0">
+        <div className="sticky bottom-0 left-0 right-0 px-6 pt-6 pb-2 bg-gradient-to-t from-white via-white to-white/0">
           <button 
             onClick={() => setShowOrderComplete(true)}
             className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-[15px] shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2"
@@ -476,7 +476,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9] pb-20">
+    <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
       {/* Header */}
       <AppHeader variant="center" title="동화 일기" />
 
@@ -571,7 +571,7 @@ export const DiaryTab: React.FC<DiaryTabProps> = ({ diaries }) => {
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-3">
-          <div className="grid grid-cols-2 gap-4 pb-24">
+          <div className="grid grid-cols-2 gap-4">
             {filteredDiaries.map((diary) => (
               <button 
                 key={diary.id} 

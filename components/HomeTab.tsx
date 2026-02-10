@@ -394,7 +394,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       </section>
 
       {/* Timeline */}
-      <section className="px-6 pb-20 mt-6">
+      <section className="px-6 mt-6">
          <div className="flex justify-between items-center mb-4">
             <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.1em]">Today's Timeline</h3>
             <button onClick={() => onGoToReport(currentDate)} className="text-xs text-[#FFB347] font-bold flex items-center gap-1">분석 리포트 <ChevronRight size={14} /></button>

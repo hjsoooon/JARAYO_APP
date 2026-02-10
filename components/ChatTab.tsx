@@ -689,7 +689,7 @@ export const ChatTab: React.FC = () => {
               })()}
             </div>
 
-            <div ref={insightsContainerRef} className="flex-1 overflow-y-auto hide-scrollbar px-4 space-y-6 pb-20">
+            <div ref={insightsContainerRef} className="flex-1 overflow-y-auto hide-scrollbar px-4 space-y-6">
               <section className="fade-in">
                 <h3 className="text-base font-black text-[#222] mb-4 flex items-center gap-2">
                   <span>📊</span>
