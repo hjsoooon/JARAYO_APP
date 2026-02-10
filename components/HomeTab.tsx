@@ -231,7 +231,6 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-bold text-gray-800">{profile.name}의 하루</h1>
-            <span className="text-xs text-amber-500 font-semibold">D+{diffDays}일</span>
           </div>
           <button 
             onClick={onOpenSettings}
@@ -244,6 +243,11 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
       {/* Floating Character Area (Updated for bigger size and no circle) */}
       <section className="px-6 py-10 text-center flex flex-col items-center">
+        {/* D-Day Badge */}
+        <div className="mb-6 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full shadow-lg">
+          <span className="text-2xl font-bold text-white">D+{diffDays}일</span>
+        </div>
+
         <div 
           className="relative w-full max-w-[240px] aspect-square flex items-center justify-center group cursor-pointer" 
           onClick={() => fileInputRef.current?.click()}
