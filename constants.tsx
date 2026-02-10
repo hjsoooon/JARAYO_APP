@@ -64,8 +64,6 @@ export const COACHES: Coach[] = [
   }
 ];
 
-];
-
 // 각 코치별 일러스트 카드 콘텐츠 (상세 가이드 포함)
 export const ILLUSTRATION_CARDS = {
   SLEEP: [

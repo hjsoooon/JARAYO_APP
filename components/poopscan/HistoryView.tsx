@@ -3,9 +3,9 @@ import { PoopHistoryItem } from '../../types';
 import { deleteFromHistory, clearHistory } from '../../services/poopscan/historyStorage';
 
 interface HistoryViewProps {
-  history: HistoryItem[];
+  history: PoopHistoryItem[];
   onBack: () => void;
-  onSelectItem: (item: HistoryItem) => void;
+  onSelectItem: (item: PoopHistoryItem) => void;
   onHistoryChange: () => void;
 }
 
