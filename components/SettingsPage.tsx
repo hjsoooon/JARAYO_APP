@@ -66,12 +66,12 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   if (view === 'editName') {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-        <SubHeader title="이름 수정" onBack={() => setView('main')} />
+        <SubHeader title="이름 수정" onBack={() => { setEditValue(''); setView('main'); }} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">아이 이름</label>
           <input 
             type="text"
-            value={editValue || profile.name}
+            value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
             className="w-full bg-white rounded-xl px-4 py-3.5 text-base font-medium border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
             placeholder="이름을 입력하세요"
@@ -99,7 +99,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   if (view === 'editPhone') {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-        <SubHeader title="전화번호 수정" onBack={() => setView('main')} />
+        <SubHeader title="전화번호 수정" onBack={() => { setEditValue(''); setView('main'); }} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">전화번호</label>
           <input 
@@ -125,12 +125,12 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ profile, onBack, onU
   if (view === 'editBirth') {
     return (
       <div className="h-full flex flex-col bg-gradient-to-b from-[#FFF9E6] to-[#FFF4D9]">
-        <SubHeader title="생년월일 수정" onBack={() => setView('main')} />
+        <SubHeader title="생년월일 수정" onBack={() => { setEditValue(''); setView('main'); }} />
         <div className="flex-1 px-5 py-6">
           <label className="block text-sm font-bold text-gray-500 mb-2">아이 생년월일</label>
           <input 
             type="date"
-            value={editValue || profile.birthDate}
+            value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
             className="w-full bg-white rounded-xl px-4 py-3.5 text-base font-medium border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all"
             autoFocus
