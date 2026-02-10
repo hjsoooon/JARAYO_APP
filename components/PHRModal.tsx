@@ -292,54 +292,37 @@ export const PHRModal: React.FC<PHRModalProps> = ({ isOpen, onClose, record, mod
         return (
           <div className="space-y-4">
             <div className="flex gap-3">
-               {(['PEE', 'POO'] as PoopType[]).map((t) => (
-                 <button
-                   key={t}
-                   onClick={() => setSubtype(t)}
-                   className={`flex-1 py-4 rounded-2xl border-2 font-bold transition-all flex flex-col items-center gap-1 ${
-                     subtype === t 
-                       ? t === 'POO' 
-                         ? 'border-amber-400 bg-amber-50 text-amber-800' 
-                         : 'border-yellow-500 bg-yellow-50 text-yellow-800'
-                       : 'border-gray-100 bg-white text-gray-400'
-                   }`}
-                 >
-                   <span className="text-2xl">{t === 'PEE' ? '💧' : '💩'}</span>
-                   <span>{t === 'PEE' ? '소변' : '대변'}</span>
-                 </button>
-               ))}
+               <button
+                 onClick={() => setSubtype('PEE')}
+                 className={`flex-1 py-4 rounded-2xl border-2 font-bold transition-all flex flex-col items-center gap-1 ${
+                   subtype === 'PEE'
+                     ? 'border-yellow-400 bg-yellow-50 text-yellow-800'
+                     : 'border-gray-100 bg-white text-gray-400'
+                 }`}
+               >
+                 <span className="text-2xl">💧</span>
+                 <span className="text-sm">소변</span>
+               </button>
+               <button
+                 onClick={() => setSubtype('POO')}
+                 className={`flex-1 py-4 rounded-2xl border-2 font-bold transition-all flex flex-col items-center gap-1 ${
+                   subtype === 'POO'
+                     ? 'border-amber-400 bg-amber-50 text-amber-800'
+                     : 'border-gray-100 bg-white text-gray-400'
+                 }`}
+               >
+                 <span className="text-2xl">💩</span>
+                 <span className="text-sm">대변</span>
+               </button>
+               <button
+                 onClick={() => setShowPoopScan(true)}
+                 className="flex-1 py-4 rounded-2xl border-2 border-purple-200 bg-gradient-to-b from-purple-50 to-indigo-50 font-bold transition-all flex flex-col items-center gap-1 text-purple-700 active:scale-95 relative overflow-hidden"
+               >
+                 <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
+                 <span className="text-2xl relative z-10">🤖</span>
+                 <span className="text-[11px] relative z-10 leading-tight text-center">AI<br/>푸스캔</span>
+               </button>
             </div>
-            
-            {subtype === 'POO' && (
-              <div className="space-y-3">
-                {/* AI 푸스캔 유도 카드 */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🤖</span>
-                    <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">AI 추천</span>
-                  </div>
-                  <p className="text-sm text-amber-800 font-medium mb-1">사진을 찍으면 AI가 건강 상태를 분석해드려요!</p>
-                  <p className="text-[11px] text-amber-600/70 mb-3">색상, 굳기, 양 등을 자동으로 체크합니다</p>
-                  
-                  <button
-                    onClick={() => setShowPoopScan(true)}
-                    className="relative flex items-center justify-center gap-3 w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-xl font-bold shadow-lg shadow-orange-200/50 overflow-hidden active:scale-[0.97] transition-transform"
-                  >
-                    <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.15)_50%,transparent_75%)] bg-[length:250%_250%] animate-[shimmer_3s_linear_infinite]"></div>
-                    <Camera size={20} className="relative z-10" />
-                    <span className="relative z-10 text-[15px]">AI 푸스캔 시작하기</span>
-                    <span className="relative z-10 text-lg">📸</span>
-                  </button>
-                </div>
-
-                {/* 또는 수동 기록 안내 */}
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-px bg-gray-200"></div>
-                  <span className="text-[11px] text-gray-400 font-medium">또는 직접 기록</span>
-                  <div className="flex-1 h-px bg-gray-200"></div>
-                </div>
-              </div>
-            )}
           </div>
         );
       case 'BATH':
