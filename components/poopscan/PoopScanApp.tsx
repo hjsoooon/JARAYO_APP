@@ -84,17 +84,6 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-amber-50 to-orange-50 flex flex-col overflow-hidden">
-      {/* Close button */}
-      {onClose && (
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-[60] w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg text-amber-600 hover:bg-white transition-colors"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-      )}
 
       {state.view === 'camera' && (
         <div className="flex-1 min-h-0 relative">
@@ -104,6 +93,7 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
             onPermissionChange={handlePermissionChange}
             onShowHistory={handleShowHistory}
             historyCount={history.length}
+            onClose={onClose}
           />
         </div>
       )}
@@ -114,6 +104,7 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
             onCapture={() => {}} 
             isProcessing={true} 
             capturedImage={state.capturedImage}
+            onClose={onClose}
           />
         </div>
       )}

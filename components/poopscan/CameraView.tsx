@@ -8,9 +8,10 @@ interface CameraViewProps {
   onPermissionChange?: (hasPermission: boolean | null) => void;
   onShowHistory?: () => void;
   historyCount?: number;
+  onClose?: () => void;
 }
 
-const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, capturedImage, onPermissionChange, onShowHistory, historyCount = 0 }) => {
+const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, capturedImage, onPermissionChange, onShowHistory, historyCount = 0, onClose }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -131,12 +132,22 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, captur
             <img src={`${import.meta.env.BASE_URL}로고.png`} alt="푸스캔" className="w-6 h-6" />
             푸스캔 AI
           </div>
-          <button 
-            onClick={() => setShowHelp(true)}
-            className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-amber-600"
-          >
-            <i className="fa-solid fa-question text-sm"></i>
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setShowHelp(true)}
+              className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-amber-600"
+            >
+              <i className="fa-solid fa-question text-sm"></i>
+            </button>
+            {onClose && (
+              <button 
+                onClick={onClose}
+                className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-amber-600"
+              >
+                <i className="fa-solid fa-xmark text-sm"></i>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Content */}
@@ -285,12 +296,22 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, isProcessing, captur
               <img src={`${import.meta.env.BASE_URL}로고.png`} alt="푸스캔" className="w-6 h-6" />
               푸스캔 AI
             </div>
-            <button 
-              onClick={() => setShowHelp(true)}
-              className="w-9 h-9 rounded-full bg-white/90 flex items-center justify-center text-amber-700 shadow-sm"
-            >
-              <i className="fa-solid fa-question text-sm"></i>
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setShowHelp(true)}
+                className="w-9 h-9 rounded-full bg-white/90 flex items-center justify-center text-amber-700 shadow-sm"
+              >
+                <i className="fa-solid fa-question text-sm"></i>
+              </button>
+              {onClose && (
+                <button 
+                  onClick={onClose}
+                  className="w-9 h-9 rounded-full bg-white/90 flex items-center justify-center text-amber-700 shadow-sm"
+                >
+                  <i className="fa-solid fa-xmark text-sm"></i>
+                </button>
+              )}
+            </div>
           </div>
         )}
 
