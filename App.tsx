@@ -7,8 +7,18 @@ import { ChatTab } from './components/ChatTab.tsx';
 import { ReportTab } from './components/ReportTab.tsx';
 import { PHRModal } from './components/PHRModal.tsx';
 import { SettingsPage } from './components/SettingsPage.tsx';
-import { BabyProfile, PHRRecord, RecordType, DiaryEntry } from './types.ts';
+import { BabyProfile, PHRRecord, RecordType, DiaryEntry, GrowthRecord } from './types.ts';
 import { generateDiaryEntry } from './services/geminiService.ts';
+
+const BASE = '/JARAYO_APP/';
+const getStorybookImage = (phrTypes: string[], content: string): string => {
+  const text = content.toLowerCase();
+  if (phrTypes.includes('SLEEP') || text.includes('잠') || text.includes('자') || text.includes('꿈')) return `${BASE}storybook/sleeping.png`;
+  if (phrTypes.includes('FEED') || text.includes('밥') || text.includes('먹') || text.includes('수유') || text.includes('이유식')) return `${BASE}storybook/feeding.png`;
+  if (phrTypes.includes('BATH') || text.includes('목욕') || text.includes('씻') || text.includes('물놀이')) return `${BASE}storybook/bathing.png`;
+  if (text.includes('놀') || text.includes('장난감') || text.includes('웃')) return `${BASE}storybook/playing.png`;
+  return `${BASE}storybook/morning.png`;
+};
 
 const App: React.FC = () => {
   const [profile, setProfile] = useState<BabyProfile | null>(null);
@@ -16,7 +26,8 @@ const App: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [records, setRecords] = useState<PHRRecord[]>([]);
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
-  
+  const [growthRecords, setGrowthRecords] = useState<GrowthRecord[]>([]);
+
   // Modal State
   const [isPHRModalOpen, setIsPHRModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'CREATE' | 'EDIT'>('CREATE');
@@ -35,6 +46,10 @@ const App: React.FC = () => {
     const savedDiaries = localStorage.getItem('jarayo_diaries');
     if (savedDiaries) {
       setDiaries(JSON.parse(savedDiaries));
+    }
+    const savedGrowth = localStorage.getItem('jarayo_growth');
+    if (savedGrowth) {
+      setGrowthRecords(JSON.parse(savedGrowth));
     }
   }, []);
 
@@ -68,15 +83,21 @@ const App: React.FC = () => {
     setActiveTab('home');
   };
 
-  const handleQuickAdd = (type: RecordType, subtype?: string) => {
+  const handleQuickAdd = (type: RecordType, subtype?: string, value?: string) => {
     const newRecord: PHRRecord = {
         id: Date.now().toString(),
         type,
         subtype,
         timestamp: new Date().toISOString(),
-        value: type === 'SLEEP' ? '수면 시작' : type === 'BATH' ? '목욕 시작' : undefined, 
+        value: value || (type === 'SLEEP' ? '수면 시작' : type === 'BATH' ? '목욕 시작' : undefined),
     };
     saveRecord(newRecord);
+  };
+
+  const handleSaveGrowth = (record: GrowthRecord) => {
+    const updated = [...growthRecords.filter(r => r.date !== record.date), record].sort((a, b) => a.date.localeCompare(b.date));
+    setGrowthRecords(updated);
+    localStorage.setItem('jarayo_growth', JSON.stringify(updated));
   };
 
   const handleOpenTimer = () => {
@@ -151,8 +172,8 @@ const App: React.FC = () => {
       title: `${profile.name}의 하루`,
       content: aiStory,
       babyContent: text, // 원본 부모 입력
-      mainImageUrl: profile.photoUrl, // 캐릭터 이미지
-      imageUrl: profile.photoUrl,
+      mainImageUrl: getStorybookImage(phrTypes, aiStory),
+      imageUrl: getStorybookImage(phrTypes, aiStory),
       mood: 'happy',
       voiceNotes: [], // 추후 음성 녹음 기능 추가 시 사용
       gallery: [], // 추후 갤러리 기능 추가 시 사용
@@ -191,7 +212,7 @@ const App: React.FC = () => {
       case 'chat':
         return <ChatTab />;
       case 'report':
-        return <ReportTab records={records} />;
+        return <ReportTab records={records} growthRecords={growthRecords} onSaveGrowth={handleSaveGrowth} profile={profile!} />;
       default:
         return null;
     }

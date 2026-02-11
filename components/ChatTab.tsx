@@ -406,31 +406,32 @@ export const ChatTab: React.FC = () => {
             </div>
           </div>
         }
-      >
-        {/* 탭 전환 (세그먼트 컨트롤) */}
-        <div className="flex bg-[#FFF4E0] p-1 rounded-xl">
-          <button 
-            onClick={() => setActiveTab('CHATS')} 
-            className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
-              activeTab === 'CHATS' 
-                ? 'bg-white text-[#FFB347] shadow-sm' 
+      />
+
+      <div className="px-5 pt-4 pb-2">
+        <div className="flex bg-gray-100 p-1.5 rounded-[20px] text-[13px] font-bold shadow-inner">
+          <button
+            onClick={() => setActiveTab('CHATS')}
+            className={`flex-1 py-2.5 rounded-[14px] transition-all duration-300 ${
+              activeTab === 'CHATS'
+                ? 'bg-white shadow-md text-gray-800'
                 : 'text-gray-400'
             }`}
           >
-            💬 상담
+            상담
           </button>
-          <button 
-            onClick={() => setActiveTab('INSIGHTS')} 
-            className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
-              activeTab === 'INSIGHTS' 
-                ? 'bg-white text-[#FFB347] shadow-sm' 
+          <button
+            onClick={() => setActiveTab('INSIGHTS')}
+            className={`flex-1 py-2.5 rounded-[14px] transition-all duration-300 ${
+              activeTab === 'INSIGHTS'
+                ? 'bg-white shadow-md text-gray-800'
                 : 'text-gray-400'
             }`}
           >
-            📊 리포트
+            리포트
           </button>
         </div>
-      </AppHeader>
+      </div>
 
       <div className="flex-1 overflow-hidden flex flex-col">
         {activeTab === 'CHATS' ? (

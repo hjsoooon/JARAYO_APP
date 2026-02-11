@@ -49,7 +49,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         {/* 타이틀 영역 */}
         <div className={`flex items-center gap-2 ${variant === 'center' ? 'absolute left-1/2 -translate-x-1/2' : 'flex-1 ml-2'}`}>
           {variant === 'center' && (
-            <span className="text-base leading-none">🧒</span>
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="logo" className="w-6 h-6" />
           )}
           <h1
             className={`font-extrabold tracking-tight ${

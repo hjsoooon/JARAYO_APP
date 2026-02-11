@@ -8,9 +8,10 @@ import HistoryView from './HistoryView';
 
 interface PoopScanAppProps {
   onClose?: () => void;
+  onSaveRecord?: (value: string) => void;
 }
 
-const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
+const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose, onSaveRecord }) => {
   const [state, setState] = useState<PoopScanState>(() => ({
     view: 'camera',
     capturedImage: null,
@@ -43,6 +44,12 @@ const PoopScanApp: React.FC<PoopScanAppProps> = ({ onClose }) => {
         refreshHistory();
       } catch (historyError) {
         console.warn("History save failed:", historyError);
+      }
+
+      // PHR 타임라인에 기록
+      if (onSaveRecord) {
+        const summary = `AI 푸스캔: ${result.color || ''}, ${result.firmness || ''}, ${result.statusLabel || ''}`.trim();
+        onSaveRecord(summary);
       }
       
       const newState = {

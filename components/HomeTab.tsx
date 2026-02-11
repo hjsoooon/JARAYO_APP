@@ -7,7 +7,7 @@ import { AppHeader, HeaderIconButton } from './AppHeader';
 interface HomeTabProps {
   profile: BabyProfile;
   records: PHRRecord[];
-  onQuickAdd: (type: RecordType, subtype?: string) => void;
+  onQuickAdd: (type: RecordType, subtype?: string, value?: string) => void;
   onOpenTimer: () => void; 
   onEditRecord: (record: PHRRecord) => void;
   onGenerateDiary: (text: string) => void;
@@ -178,7 +178,8 @@ export const HomeTab: React.FC<HomeTabProps> = ({
        return `${rec.subtype === 'FORMULA' ? '분유' : '이유식'} ${rec.value || ''}`;
     }
     if (rec.type === 'POOP') {
-       return rec.subtype === 'PEE' ? '소변' : '대변';
+       if (rec.subtype === 'PEE') return '소변';
+       return rec.value || '대변';
     }
     if (rec.type === 'BATH') {
        return '목욕';
@@ -188,15 +189,15 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
   const getTimelineIcon = (rec: PHRRecord) => {
     if (rec.type === 'FEED') {
-       if (rec.subtype === 'BREAST') return <Milk size={14} className="text-rose-400" />;
-       if (rec.subtype === 'FORMULA') return <Coffee size={14} className="text-sky-400" />;
-       return <Soup size={14} className="text-emerald-400" />;
+       if (rec.subtype === 'BREAST') return <span className="text-sm">🤱</span>;
+       if (rec.subtype === 'FORMULA') return <span className="text-sm">🍼</span>;
+       return <span className="text-sm">🥣</span>;
     }
     if (rec.type === 'POOP') {
-       return rec.subtype === 'PEE' ? <Droplets size={14} className="text-sky-400" /> : <Trash2 size={14} className="text-[#92400e]" />;
+       return rec.subtype === 'PEE' ? <span className="text-sm">💧</span> : <span className="text-sm">💩</span>;
     }
-    if (rec.type === 'SLEEP') return <Moon size={14} className="text-indigo-400" />;
-    if (rec.type === 'BATH') return <Droplet size={14} className="text-blue-400" />;
+    if (rec.type === 'SLEEP') return <span className="text-sm">😴</span>;
+    if (rec.type === 'BATH') return <span className="text-sm">🛁</span>;
     return null;
   };
 
@@ -230,7 +231,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {/* Header */}
       <AppHeader
         variant="center"
-        title="자라요"
+        title="JARAYO"
         rightAction={
           <HeaderIconButton onClick={onOpenSettings}>
             <UserCircle size={20} strokeWidth={2} />
@@ -313,7 +314,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {/* Quick Actions (PHR) */}
       <section className="px-6 py-4 relative">
         <div className="flex justify-between items-center mb-6">
-           <h2 className="text-lg font-bold text-gray-700">기록 (PHR)</h2>
+           <h2 className="text-lg font-bold text-gray-700">{profile.name}의 오늘 기록</h2>
            <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl shadow-sm border border-orange-100">
               <button onClick={() => handleDateChange(-1)} className="p-1.5 text-gray-400 hover:text-[#FFB347] hover:bg-orange-50 rounded-xl transition-colors"><ChevronLeft size={16} /></button>
               <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-50/50 rounded-lg">
@@ -325,17 +326,16 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
         <div className="grid grid-cols-4 gap-3 relative z-50">
           {[
-            { id: 'SLEEP', icon: Moon, label: '수면', color: 'bg-[#E8D4F8] text-[#9B6EC9] border-[#D4B8E8]' },
-            { id: 'FEED', icon: Utensils, label: '수유', color: 'bg-[#FFE5B4] text-[#FFB347] border-[#FFD9A1]' },
-            { id: 'POOP', icon: Baby, label: '배변', color: 'bg-[#FFF4CC] text-[#FFD93D] border-[#FFE9A8]' },
-            { id: 'BATH', icon: Droplet, label: '목욕', color: 'bg-[#D4E8F1] text-[#6BA5C4] border-[#B8D8E8]' },
+            { id: 'SLEEP', emoji: '😴', label: '수면', color: 'bg-[#E8D4F8] text-[#9B6EC9] border-[#D4B8E8]' },
+            { id: 'FEED', emoji: '🍼', label: '수유', color: 'bg-[#FFE5B4] text-[#FFB347] border-[#FFD9A1]' },
+            { id: 'POOP', emoji: '💩', label: '배변', color: 'bg-[#FFF4CC] text-[#FFD93D] border-[#FFE9A8]' },
+            { id: 'BATH', emoji: '🛁', label: '목욕', color: 'bg-[#D4E8F1] text-[#6BA5C4] border-[#B8D8E8]' },
           ].map((action) => {
-             const Icon = action.icon;
              const isDimmed = activeMenu && activeMenu !== action.id;
              return (
                <div key={action.id} className="relative">
                  <button onClick={() => handleIconClick(action.id as RecordType)} className={`flex flex-col items-center gap-2 w-full transition-all duration-300 ${isDimmed ? 'opacity-30 scale-90' : 'opacity-100 scale-100'}`}>
-                   <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center shadow-sm border ${action.color} active:scale-95 transition-transform`}><Icon size={24} /></div>
+                   <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center shadow-sm border ${action.color} active:scale-95 transition-transform`}><span className="text-2xl">{action.emoji}</span></div>
                    <span className="text-[11px] font-bold text-gray-500">{action.label}</span>
                  </button>
                  
@@ -343,20 +343,20 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                  {activeMenu === 'FEED' && action.id === 'FEED' && (
                     <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-4 z-[60] animate-in zoom-in duration-200">
                         <div className="flex flex-col items-center gap-2">
-                           <button onClick={() => handleSubtypeClick('FEED', 'BREAST')} className="w-16 h-16 rounded-full bg-white border-2 border-rose-200 text-rose-400 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
-                              <Milk size={28} />
+                           <button onClick={() => handleSubtypeClick('FEED', 'BREAST')} className="w-16 h-16 rounded-full bg-white border-2 border-rose-200 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+                              <span className="text-3xl">🤱</span>
                            </button>
                            <span className="text-[10px] font-bold text-rose-500 bg-white/95 px-2 py-0.5 rounded-full shadow-sm">모유</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
-                           <button onClick={() => handleSubtypeClick('FEED', 'FORMULA')} className="w-16 h-16 rounded-full bg-white border-2 border-sky-200 text-sky-400 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
-                              <Coffee size={28} />
+                           <button onClick={() => handleSubtypeClick('FEED', 'FORMULA')} className="w-16 h-16 rounded-full bg-white border-2 border-sky-200 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+                              <span className="text-3xl">🍼</span>
                            </button>
                            <span className="text-[10px] font-bold text-sky-600 bg-white/95 px-2 py-0.5 rounded-full shadow-sm">분유</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
-                           <button onClick={() => handleSubtypeClick('FEED', 'FOOD')} className="w-16 h-16 rounded-full bg-white border-2 border-emerald-200 text-emerald-400 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
-                              <Soup size={28} />
+                           <button onClick={() => handleSubtypeClick('FEED', 'FOOD')} className="w-16 h-16 rounded-full bg-white border-2 border-emerald-200 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+                              <span className="text-3xl">🥣</span>
                            </button>
                            <span className="text-[10px] font-bold text-emerald-600 bg-white/95 px-2 py-0.5 rounded-full shadow-sm">이유식</span>
                         </div>
@@ -367,14 +367,14 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                  {activeMenu === 'POOP' && action.id === 'POOP' && (
                     <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-5 z-[60] animate-in zoom-in duration-200">
                         <div className="flex flex-col items-center gap-2">
-                           <button onClick={() => handleSubtypeClick('POOP', 'PEE')} className="w-16 h-16 rounded-full bg-white border-2 border-sky-200 text-sky-500 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
-                              <Droplets size={28} />
+                           <button onClick={() => handleSubtypeClick('POOP', 'PEE')} className="w-16 h-16 rounded-full bg-white border-2 border-sky-200 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+                              <span className="text-3xl">💧</span>
                            </button>
                            <span className="text-[10px] font-bold text-sky-600 bg-white/95 px-2 py-0.5 rounded-full shadow-sm">소변</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
-                           <button onClick={() => handleSubtypeClick('POOP', 'POO')} className="w-16 h-16 rounded-full bg-white border-2 border-[#92400e]/30 text-[#92400e] shadow-xl flex items-center justify-center active:scale-90 transition-transform">
-                              <Trash2 size={28} />
+                           <button onClick={() => handleSubtypeClick('POOP', 'POO')} className="w-16 h-16 rounded-full bg-white border-2 border-[#92400e]/30 shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+                              <span className="text-3xl">💩</span>
                            </button>
                            <span className="text-[10px] font-bold text-[#92400e] bg-white/95 px-2 py-0.5 rounded-full shadow-sm">대변</span>
                         </div>
@@ -445,7 +445,12 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       {showPoopScan && (
         <div className="fixed inset-0 z-[200] bg-white flex items-center justify-center">
           <div className="w-full h-full max-w-md relative">
-            <PoopScanApp onClose={() => setShowPoopScan(false)} />
+            <PoopScanApp
+              onClose={() => setShowPoopScan(false)}
+              onSaveRecord={(value) => {
+                onQuickAdd('POOP', 'POO', value);
+              }}
+            />
           </div>
         </div>
       )}

@@ -24,6 +24,14 @@ export interface PHRRecord {
   details?: Record<string, any>; // Flexible for specific data (color, hardness)
 }
 
+export interface GrowthRecord {
+  id: string;
+  date: string;              // YYYY-MM-DD
+  height?: number;           // cm
+  weight?: number;           // kg
+  headCircumference?: number; // cm
+}
+
 export interface VoiceNote {
   id: string;
   timestamp: string; // ISO string for sorting
